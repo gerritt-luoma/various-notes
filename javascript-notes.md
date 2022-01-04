@@ -59,3 +59,28 @@ switch (groceryItem) {
     break;
 }
 ```
+## Functions
+- Function declarations start with the `function` keyword followed by the `function name` followed by parentheses and the function body
+- Function parameters in JS work the same way as any other language
+- You can have default parameters by setting the input to a value in the function declaration
+```
+function greeting (name = 'stranger') {
+  console.log(`Hello, ${name}!`)
+}
+ 
+greeting('Nick') // Output: Hello, Nick!
+greeting() // Output: Hello, stranger!
+```
+- Returning values works like in other coding languages
+### Function expressions
+- We can define an anonymous function to calculate the value of a variable.  The variable name will be the identifier and the function will be what the variable is equal to.
+```
+const calcArea = function(width, height){
+  const area = width * height
+  return area
+}
+```
+- These function expressions are not hoisted so they cannot be called before they are defined
+- Instead of declaring it as a function, ES6 introduced arrow syntax, `=> ()`, that removes the function keyword
+- When using arrow syntax, parentheses are only needed if the function has no inputs or if it has more than 1 input.  If it has 1 input, no parentheses are needed
+- A function body coomposed of a single-line block does not need curly braces.  If there are no parentheses, the one line block will evaluate and be automatically returned.
