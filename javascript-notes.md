@@ -10,7 +10,7 @@ The following information was found on [stack overflow](https://stackoverflow.co
   - `var` variables are scoped to the entire function body while `let` variables are scoped to their closing block statement denoted by `{ }`
   - `var` variables are hoised meaning that they are initialized as `undefined` before the code is run meaning they are accessible before being declared.  `let` varaibles are not hoisted meaning if they are accessed before being initialized they will throw a `ReferenceError`
   - `var` variables are globally scoped if defined at the top level while `let` variables are not
-  - `var` variables are able to be redeclared using the `var` keyword with the original value being replaced with the new value.  `let` variables are not able to be redeclared with the `let` keyword with it throwing a `SyntaxError`
+  - `var` variables are able to be redeclared using the `var` keyword with the original value being replaced with the new value.  `let` variables are not able to be redeclared at the same level of scope with the `let` keyword with it throwing a `SyntaxError`.  If you have a let variable in a higher block/scope you can redeclare that variable in a lower block/scope without changing the higher one
 
 ## String interpolation
 - When logging to the console the best way to format the output of strings is to use interpolation.  Instead of using quotations for the strings, use back tick marks ` and insert your variables into the string with ${variable}
@@ -83,4 +83,97 @@ const calcArea = function(width, height){
 - These function expressions are not hoisted so they cannot be called before they are defined
 - Instead of declaring it as a function, ES6 introduced arrow syntax, `=> ()`, that removes the function keyword
 - When using arrow syntax, parentheses are only needed if the function has no inputs or if it has more than 1 input.  If it has 1 input, no parentheses are needed
-- A function body coomposed of a single-line block does not need curly braces.  If there are no parentheses, the one line block will evaluate and be automatically returned.
+- A function body composed of a single-line block does not need curly braces.  If there are no parentheses, the one line block will evaluate and be automatically returned.
+## Arrays
+- Arrays in js seem to work the same way they do in python.  They can store any datatype and can store multiple data types in one list.
+- JS arrays are zero indexed
+- To get length of arrays it's `arrayName.length`
+- To append values to the end of the array, it is `arrayName.push(value)`.  If you are adding multiple values just add more values like parameters
+- To remove the last item of an array use the pop function. `arrayName.pop()` 
+- `arrayName.shift()` removes the first item of the array
+- `arrayName.unshift(value)` adds a new item to the beginning of the array
+- `arrayName.slice(value)` will slice off the first `value` items of an array.  You can include a second parameter to give the values in an array between specific indexes
+- `arrayName.indexOf(val)` will return the index of `val` in the array.  If val doesn't exist it will return `-1`
+- All array documents can be found on the [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
+- Arrays can be nested meaning they can contain arrays. If you have arrays within another array, you can access values with `myArr[x][y]`
+## Loops
+- `for` loops take the form of `for(let x = y; x < z, x++)` similar to C, C++ or Java
+- `while` loops are also similar to that of C, C++ and Java
+- `do while` loops are used to ensure a task is carried out at least once even if conditions satisfy the while loop to break out
+- `break` keyword will stop the execution of a loop regardless of if the condition is satisfied or not
+## Iterators
+- The `.forEach()` function will loop through and execute the same code on every elemtent of an array
+  - For each takes a callback function as an argument to execute on every item in the array
+  - `.forEach()` will **ALWAYS** return `undefined`
+  - `groceries.forEach(groceryItem => console.log(groceryItem));` wil print out every item to the console
+```
+const fruits = ['mango', 'papaya', 'pineapple', 'apple'];
+
+// Iterate over fruits below
+fruits.forEach(fruit => console.log("I want to eat a " + fruit)) //returns "I want to eat a <fruit>" for each fruit
+```
+- The `.map()` method is similar to `.forEach()` in that it takes a callback to operate on each element in an array but the difference is that it returns an array
+  - This is used to create new arrays based on the current array being operated on
+```
+const animals = ['Hen', 'elephant', 'llama', 'leopard', 'ostrich', 'Whale', 'octopus', 'rabbit', 'lion', 'dog'];
+
+// Create the secretMessage array below
+const secretMessage = animals.map(animal => animal[0])
+
+console.log(secretMessage.join('')); //HelloWorld
+
+const bigNumbers = [100, 200, 300, 400, 500];
+const smallNumbers = bigNumbers.map(num => num/100)
+// Create the smallNumbers array below
+console.log(smallNumbers) // [ 1, 2, 3, 4, 5 ]
+```
+- The `.filter()` method is also similar to `.forEach()` in that it takes a callback to operate on each element in an array but the difference is that it returns an array while performing some additional operations
+  - This is used to filter out some values in the array based on conditions in the callback function
+```
+const randomNumbers = [375, 200, 3.14, 7, 13, 852];
+const smallNumbers = randomNumbers.filter(num => num < 250)
+const favoriteWords = ['nostalgia', 'hyperbole', 'fervent', 'esoteric', 'serene'];
+const longFavoriteWords = favoriteWords.filter(word => {
+  if(word.length > 7)
+  {
+    return word
+  }
+})
+console.log(smallNumbers) // [ 200, 3.14, 7, 13 ]
+console.log(longFavoriteWords) // [ 'nostalgia', 'hyperbole', 'esoteric' ]
+```
+- The `.findIndex()` function iterates through all elements in the array and returns the **FIRST** index that evaluates to `true`
+```
+const animals = ['hippo', 'tiger', 'lion', 'seal', 'cheetah', 'monkey', 'salamander', 'elephant'];
+const foundAnimal = animals.findIndex(animal => {
+  if(animal === 'elephant')
+  {
+    return animal
+  }
+})
+console.log(foundAnimal) // 7
+const startsWithS = animals.findIndex(animal => {
+  if(animal[0] === 's')
+  {
+    return animal
+  }
+})
+console.log(startsWithS) // 3
+```
+- The `.reduce()` method reduces the array to a single value.  This can be used to perform actions such as adding or multiplying all elements together.  You can add a second argument to the function to have a starting place for the accumulator
+```
+const newNumbers = [1, 3, 5, 7];
+const newSum = newNumbers.reduce((accumulator, currentValue) => {
+  console.log('The value of accumulator: ', accumulator);
+  console.log('The value of currentValue: ', currentValue);
+  return accumulator + currentValue
+})
+console.log(newSum) //16
+const newSum2 = newNumbers.reduce((accumulator, currentValue) => {
+  console.log('The value of accumulator: ', accumulator);
+  console.log('The value of currentValue: ', currentValue);
+  return accumulator + currentValue
+}, 10) //Adding 10 to the sum
+console.log(newSum2) //26
+```
+
