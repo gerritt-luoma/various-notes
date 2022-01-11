@@ -321,3 +321,39 @@ const robot = {
 robot.numOfSensors = 100
 console.log(robot.numOfSensors) // 100
 ```
+### Factory Functions (constructors)
+- Factory functions are used to create objects using a function
+- These functions can take parameters for properties
+```
+const monsterFactory = (name, age, energySource, catchPhrase) => {
+  return { 
+    name: name,
+    age: age, 
+    energySource: energySource,
+    scare() {
+      console.log(catchPhrase);
+    } 
+  }
+};
+const monster = monsterFactory('Jeff', 23, 'potatoes', 'POTATOES')
+```
+- ES6 introduced shorthand notation for factory functions called property value shorthand where you can use the input names as the property names/assignment
+```
+const monsterFactory = (name, age) => {
+  return { 
+    name,
+    age 
+  }
+};
+```
+- Destructured assignment is another shorthanded technique for access of variables
+```
+const { residence } = vampire; 
+console.log(residence); // Prints 'vampire.residence'
+```
+### Built-in Object Methods
+- [Link for object methods](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#Methods)
+- `Object.keys(objectName)` returns an array of the object property keys
+- `Object.entries(objectName)` returns an array of arrays containing key value pairs (almost like an array of tuples)
+- `Object.assign(target, source)` adds the source to the target and returns.  This will change the target object.
+  - To copy an object use `let newObj = Object.assign({}, oldObj)
