@@ -244,3 +244,80 @@ for (let crewMember in spaceship.crew) {
   console.log(`${crewMember}: ${spaceship.crew[crewMember].name}`);
 }
 ```
+##  Advanced objects
+- Similar to python you need to use the `this` keywords when accessing variables of an objects within its methods
+```
+const robot = {
+  model: '1E78V2',
+  energyLevel: 100,
+  provideInfo()
+  {
+    return `I am ${this.model} and my current energy level is ${this.energyLevel}.`
+  }
+};
+console.log(robot.provideInfo()) //I am 1E78V2 and my current energy level is 100.
+```
+- **NEVER USE `this` KEYWORD IN ARROW FUNCTIONS IN OBJECTS**
+  - The `this` that arrow functions reference are the global `this` as opposed to the object's `this`
+  - Javascript does not have privacy built in for objects.  Due to this, the common convention is to include an underscore as the first character of "private" property names (properties that shouldn't be altered)
+```
+const bankAccount = {
+  _amount: 1000
+}
+```
+### Getters
+- Getters get and return internal properties of the object
+- They use the `get` keyword before the function declaration
+```
+const robot = {
+  _model: '1E78V2',
+  _energyLevel: 100,
+  get energyLevel()
+  {
+    if(typeof this._energyLevel === 'number')
+    {
+      return `My current energy level is ${this._energyLevel}`
+    }
+    else
+    {
+      return 'System malfunction: cannot retrieve energy level'
+    }
+  }
+};
+
+console.log(robot.energyLevel) // My current energy level is 100
+```
+### Setters
+- Setters are similar to getters in that they use a keyword.  This keyword is `set`
+- Used to set the value of private variables 
+- Can be same name as getter
+```
+const robot = {
+  _model: '1E78V2',
+  _energyLevel: 100,
+  _numOfSensors: 15,
+  get numOfSensors(){
+    if(typeof this._numOfSensors === 'number'){
+      return this._numOfSensors;
+    } else {
+      return 'Sensors are currently down.'
+    }
+  },
+  set numOfSensors(num)
+  {
+    if(typeof num === 'number')
+    {
+      if(num >= 0)
+      {
+        this._numOfSensors = num
+      }
+      else
+      {
+        console.log('Pass in a number that is greater than or equal to 0')
+      }
+    }
+  }
+};
+robot.numOfSensors = 100
+console.log(robot.numOfSensors) // 100
+```
