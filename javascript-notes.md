@@ -177,3 +177,27 @@ const newSum2 = newNumbers.reduce((accumulator, currentValue) => {
 console.log(newSum2) //26
 ```
 
+## Objects
+- Objects can be assigned to variables 
+- Use `{}` to designate an object literal
+- Fill with unordered data.  Organized into key-value pairs
+- Similar to a dictionary in python
+```
+//Defined like 
+let animal = {
+  'name': 'Jerry',
+  'type': 'Penguin'
+}
+```
+- Access values in the form of `animal.name // Penguin`
+- Accessing properties that don't exist will return undefined
+- Can create new properties with `objName.propName = <value>`
+- Or you can access and edit values with bracket notation `objName[propName]`
+```
+let returnAnyProp = (objectName, propName) => objectName[propName];
+ 
+returnAnyProp(spaceship, 'homePlanet'); // Returns 'Earth'
+```
+- `const` objects cannot be edited (i.e. have new properties added) but they are mutable (i.e. property values can be changed)
+- To delete properties use `delete objName.propName`
+- 
