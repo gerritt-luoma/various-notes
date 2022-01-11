@@ -178,6 +178,7 @@ console.log(newSum2) //26
 ```
 
 ## Objects
+### Basic Objects
 - Objects can be assigned to variables 
 - Use `{}` to designate an object literal
 - Fill with unordered data.  Organized into key-value pairs
@@ -200,4 +201,46 @@ returnAnyProp(spaceship, 'homePlanet'); // Returns 'Earth'
 ```
 - `const` objects cannot be edited (i.e. have new properties added) but they are mutable (i.e. property values can be changed)
 - To delete properties use `delete objName.propName`
-- 
+### Methods
+- You can add functions to objects as a method.  An example of a method is `console.log()` being a method where `.log()` is the method
+```
+const alienShip = {
+  invade: function () { 
+    console.log('Hello! We have come to dominate your planet. Instead of Earth, it shall be called New Xaculon.')
+  }
+};
+```
+- You can nest objects inside of other objects.  This looks VERY similar to JSON just with added functions
+- Objects are passed by reference.  This means when an object is the argument of a function, the pointer of the object is passed meaning any changes to the object are permanent changes
+### Looping through objects
+- You can use `for ... in` syntax to loop through nested object in an object
+```
+let spaceship = {
+  crew: {
+    captain: { 
+      name: 'Lily', 
+      degree: 'Computer Engineering', 
+      cheerTeam() { console.log('You got this!') } 
+    },
+    'chief officer': { 
+      name: 'Dan', 
+      degree: 'Aerospace Engineering', 
+      agree() { console.log('I agree, captain!') } 
+    },
+    medic: { 
+      name: 'Clementine', 
+      degree: 'Physics', 
+      announce() { console.log(`Jets on!`) } },
+    translator: {
+      name: 'Shauna', 
+      degree: 'Conservation Science', 
+      powerFuel() { console.log('The tank is full!') } 
+    }
+  }
+}; 
+ 
+// for...in
+for (let crewMember in spaceship.crew) {
+  console.log(`${crewMember}: ${spaceship.crew[crewMember].name}`);
+}
+```
