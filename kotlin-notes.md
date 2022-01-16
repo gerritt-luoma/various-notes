@@ -49,3 +49,90 @@ I have very little kotlin experience at the time of writing this.  I will be fol
   - `-jar` is a flag that instructs the JVM to execute the code from within a `.jar` file
   - **IMPORTANT:** Similar to any other compiled language, if you make any changes to your code you **MUST** rebuild your code 
 
+## Data Types and Variables
+### Declaration and Initialization of Variables
+- To declare and initialize a variable Kotlin uses the form
+  ```
+  var varName : dataType = varValue
+  ```
+- The information of the variable on the left side of the equals sign is the `declaration` of the variable. This is where we declare the name and type of the variable
+  - Kotlin variable naming conventions use the `camelCase` format where the first word is lowercase and all subsequent words have their first letter capitalized.  Not following this naming convention will not cause errors but it will decrease the readability of the code
+  - The first letter of the data type **MUST** be upper case i.e. `Int` or `String`
+- The information on the right side of the equals sign is the `initialization` of the variable.  This is where the variable is actually given its value
+  - Variables to not need to be initialized when they are created.  They can be declared on one line and initialized later
+    ```
+    var numExample : Int // declaration of numExample
+    numExample = 3 // initialization of numExample
+    println(numExample) // 3
+    ```
+### Declaring an Immutable Variable
+- Sometimes we don't want the value of a variable to change much like a `const` in Javascript.  We denote this using the `val` keyword instead of the `var` keyword
+  ```
+  val valName : dataType = value
+  ```
+- The rule of Kotlin is that if you are **CERTAIN** that the variable will change, use `var` but use the `val` keyword in all other cases
+- The compiler will throw an error if you attempt to reassign the value of an immutable variable
+
+### Type Inference
+- The compiler is smart enough to infer the datatype of a variable during its declaration and initialization meaning you don't always have to include the datatype in the declaration
+  ```
+  val someBool : Boolean = true // valid declaration
+  val someBool = true // valid declaration
+  ```
+- Regardles of how the variable was declared, variables can **NEVER** change their type throughout the program.  Any attempt to do so will result in an error. An example is that you can't assign a boolean to a variable of String type 
+
+## Using Text Variables
+### Strings and Characters
+- `String` datatypes are a collection of characters wrapped in `double quote` marks. The characters in a string can be a combination of digits, letters, symbols, and whitespaces like spaces, tabs, or newlines
+  ```
+  val someString : String = "Coding123!"
+  ```
+- `Char` datatypes are a single character wrapped in `single quote` marks.  They can be the same types of characters as `String` variables
+  ```
+  val someChar : Char = 'C'
+  ```
+### String Concatenation
+- You can concatenate strings together using the `+` operator
+  ```
+  "Strings" + " " + "are neat" = "Strings are neat"
+  ```
+
+### String Templates
+- String templates are very similar to `string interpolation` in JavaScript and `f strings` in Python
+- String templates use `$` followed by variable names to add the value of the variable into the string
+  ```
+  val variableName : Int = 3
+  "The value is $variableName" -> "The value is 3"
+  ```
+- String templates are much easier to read and faster to write than string concatenation
+
+### User Input
+- User input is a very important part of programming because it allows the user to interact with the programs we write
+- To take in a user input we use the `readLine()` function which pauses the program until an input is given by the user.  Once the `enter` key is pressed the `readLine()` function returns whatever was typed into the console as a `String`
+
+### Built-in Functions and Properties of Strings
+- This will only cover one used function and property of String datatypes but the full documentation for all datatypes can be fount [here](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/)
+- `Properties` provide information on a particular value of the variable it is being called on
+  - `Strings` only have one property which is their `length`
+    ```
+    val someString = "yeet"
+    println(someString.length) // 4
+    ```
+- `Functions` are used to perform specific tasks on the variable that they are called on.  You call these functions by appending `.functionName()` to the end of the variable name
+  - The `.capitalize()` function for strings ensures the first character in the string is capitalized
+    ```
+    var someString : String = "cu boulder"
+    println(someString.capitalize()) // Cu boulder
+    ```
+
+### Character Escape Sequences
+- Character escape sequences are used to format strings such as add new lines and tabs
+  - `\n` Adds a new line
+  - `\t` Adds a tab
+  - `\r` Adds a carriage return
+  - `\'` Adds a single quote
+  - `\"` Adds a double quote 
+  - `\\` Adds a backslash 
+  - `\$` Adds a dollar sign
+
+## Using Number Variables
