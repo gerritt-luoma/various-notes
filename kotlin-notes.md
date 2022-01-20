@@ -178,3 +178,106 @@ I have very little kotlin experience at the time of writing this.  I will be fol
 - `Math.max(x,y)` returns the larger value between x and y
 - `Math.random()` returns a random float between 0 and 1
 - `Math.round(x)` takes a double as an input and rounds to the nearest Int
+
+## Conditional Expressions
+- Conditional expressions are expressions that are evaluated down to a `true` or a `false`
+
+### If statements
+- If statements will check a conditional expression and if it evaluates to true, it will execute the block of code contained in it
+    ```
+    if(x){
+        // internal block
+    }
+    ```
+### Else statements
+- If the conditional of an `if` statement evaluates to false and want your program to execute specific code only when this happens, you can follow your if statement with an else statement
+    ```
+    if(x){
+        // if block
+    } else {
+        //else block
+    }
+### Else-If Statements
+- Sometimes conditional expressions can't be represented with just an if/else block and there may be more specific scenarios that need to be checked.  You can use else-if statements to add more conditional expressions to be checked.  You can use as many else if statements as you want
+    ```
+    if(x > 5){
+        // if block
+    } else if(x < 4){
+        // else if block
+    } else{
+        // else block
+    }
+
+### Comparison Operators
+- You can use comparison operators in conditional statements to compare one value with another to evaluate it to a boolean
+- These comparison operaters include `<`, `>`, `>=`, and `<=`
+
+### Equality and Inequality Operators
+- You can use (in)equality operators to determine if two values are or aren't equal.  The equality operator is `==` and the inequality operator is `!=`
+
+### Logical Operators
+- Logical operators evaluate the relationship between two booleans/expressions to return a true or false.
+- The `and` operator is denoted by `&&` and will only return true if both sides of the and are true 
+    ```
+    if(x && y) //only true if x and y are true
+    ```
+- The `or` operator is denoted by `||` and returns true if either of the sides are true
+    ```
+    if(x || y) // true if either are true
+    ```
+- The `not` operator is denoted by `!` and returns the opposite of the inverse of the expression
+    ```
+    var x = true
+    var y = !x //false
+    ```
+
+### Order of Evaluation
+- The `Order of Evaluation` is similar to that of the `Order of Operations` except it is for complex boolean expressions
+- The order follows:
+    1. Boolean expressions within a set of parentheses
+    2. NOT - `!`
+    3. AND - `&&`
+    4. OR - `||`
+
+### Nested Conditionals
+- It is possible to contain conditional expressions within other conditional expressions to achieve more precise logical solutions
+    ```
+    if(x){
+        if(y){
+            // if x && y
+        }
+        else {
+            // if x && !y
+        }
+    } else {
+        if(y){
+            // if !x && y
+        } else {
+            // if !x && !y
+        }
+    }
+    ```
+
+### When Expressions
+- `when` expressions are similar to switch statements in Python or JavaScript in that you input a value and check specific cases and act on those cases
+- State the value cases and point towards the code to be executed with an arrow `->`
+- For all unspecified cases use `else`.  Similar to the `default` for JavaScript
+    ```
+    var x = 1
+    when(x){
+        1 -> println("Small")
+        2 -> println("Medium")
+        3 -> println("Large")
+        else -> println("Not an accepted number")
+    }
+    ```
+
+### Range
+- Kotlin can create ranges of values between x and y using `x..y`
+- You can check if a value is in a range by using the `in` keyword
+    ```
+    if(z in x..y)
+    ```
+- This can be used for both numbers and characters
+
+
