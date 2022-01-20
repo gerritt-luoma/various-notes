@@ -136,3 +136,45 @@ I have very little kotlin experience at the time of writing this.  I will be fol
   - `\$` Adds a dollar sign
 
 ## Using Number Variables
+### Arithmetic Operators
+- Kotlin supports the classic arithmetic operators like any other coding language
+  - `+` - Addition
+  - `-` - Subtraction
+  - `*` - Multiplication
+  - `/` - Division
+  - `%` - Modulus
+
+### Order of Operations
+- It is important to remember the order of operations of math when writing code.  Kotlin uses an order of operations similar to that of `PEMDAS` but instead it is
+    1. Parentheses
+    2. Multiplication
+    3. Division
+    4. Modulus
+    5. Addition
+    6. Subtraction
+- Exponents are not included in the order of operations for Kotlin because it lacks an exponent operator.  Instead, Kotlin uses the `.pow()` function for exponents
+
+### Augmented Assignment Operators
+- Augmented assignment operators performs an operation on a variable and reassign the variable to the output of the operation.
+    ```
+    x = x + y
+    x += y // these lines mean the same thing
+    ```
+- You can use augmented assignment for any of the mathmatical operators
+
+### Increment and Decrement Operators
+- You can increment or decrement a variable using either the `++` operator or the `--` operator
+- Perform the same function as `+=1` and `-=1`
+    ```
+    var x = 6
+    x++ // 7
+    x-- //6
+    ```
+
+### Math Library
+- The Math library is a library that can be used to perform complex mathematical calculations that can't easily be done with the basic arithmetic operators
+- `Math.pow(x,y)` is a function that raises x to the y power.  It takes in and returns a double
+- `Math.min(x,y)` returns the smaller value between x and y
+- `Math.max(x,y)` returns the larger value between x and y
+- `Math.random()` returns a random float between 0 and 1
+- `Math.round(x)` takes a double as an input and rounds to the nearest Int
