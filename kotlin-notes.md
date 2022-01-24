@@ -99,7 +99,7 @@ I have very little kotlin experience at the time of writing this.  I will be fol
 
 ### String Templates
 - String templates are very similar to `string interpolation` in JavaScript and `f strings` in Python
-- String templates use `$` followed by variable names to add the value of the variable into the string
+- String templates use `$` followed by variable names to add the value of the variable into the string.  For an expression like a list size, use curly brackets `${val}`
   ```
   val variableName : Int = 3
   "The value is $variableName" -> "The value is 3"
@@ -280,4 +280,68 @@ I have very little kotlin experience at the time of writing this.  I will be fol
     ```
 - This can be used for both numbers and characters
 
+## Collections
+### Lists
+- Lists are a collection of values stored in an orderly fashion
+- Lists can be `mutable` and `immutable` by using either of the `var` and `val` keywords.  Mutability decided by the keyword `listOf` or `mutableListOf`
+  ```
+  var/val exList = listOf(val1, val2, val3 ..., valN) // Immutable list
+  var/val exList = mutableListOf(val1, val2, val3 ..., valN) // Mutable list
+  ```
+- The type of list can be inferred by the compiler or you can declare it yourself
+  ```
+  var/val stringList = List<String>
+  ```
+- Lists in Kotlin start with an index of 0.  Values are accessed in a similar way to Java or Python with the syntax `listName[index]`.  Accessing an element with an index that doesn't exist will throw an out of bounds error
+- You can change the value at a particular index in a mutable list with `mutableList[index] = value`
+- The size property of lists works much like the length property for strings in that it returns the number of elements 
+  ```
+  println(someArray.size) // num of elements
+  ```
+- Lists have built in functions that will allow you to perform various operations on them.  
+  - The `.contains(val)` function that will check if a list contains a value and will return a boolean
+  - The `.random()` function will return a random value from the list
+- Mutable lists will have additional functions that have write access to the list
+  - The `.add(val)` will append the value to the end of the list
+  - The `.remove(val)` will remove the value.  If it doesn't exist it will return false
 
+### Sets
+- Sets are an unordered collection of unique elements.  Sets cannot have duplicate data stored in them
+- Sets can also be `mutable` or `immutable`
+  - Immutable sets are declared with the `setOf` keyword
+    ```
+    var/val immutableSet = setOf(val1, val2, ..., valN)
+    ```
+  - Mutable sets are declared with the `mutableSetOf` keyword 
+    ```
+    var/val mutableSet = mutableSetOf(val1, val2, ..., valN)
+    ...
+    or
+    ...
+    var/val mutableSet = mutableSetOf<Type>() // declares empty set
+    ```
+
+- You access elements in a set using the `elementAt(index)` function to access a value at index 
+- If you access an element that doesn't exist, Kotlin will throw a `NullPointerException` error.  To ensure that doesn't happen, you can use the `elementAtOrNull(index)` function to get an element at an index.  If it doesn't exist it returns `null`
+- You can use the `.add(val)` function to add one value to a set, the `.addAll(<list>)` will add all values in a list to a set, and the `.clear()` function will clear a set
+- Additional set functions
+  - `.first()` will return the first value of a set
+  - `.last()` will return the last value of a set
+  - `.sum()` will sum the elements of a set
+
+### Maps
+- Maps are a collection of key-value pairs much like JSON or Python dictionaries
+- You create immutable maps by using the `mapOf` keyword 
+  ```
+  val/var immutableMap = mapOf(key1 to val1, key2 to val2, key3 to val3) // the to keyword is needed for every one
+  ```
+- You create mutable maps by using the `mutableMapOf` keyword
+  ```
+  val/var mutableMap = mutableMapOf(key1 to val1, key2 to val2, key3 to val3)
+  ```
+  - You can edit values at keys with mutable maps
+- You retrieve the `value` at `key` with `mapName[key] // value`
+- You can get all keys at once with `mapName.keys`
+- You can get all values at once with `mapName.values`
+- You can add values to a map using the `.put(key, value)` function that will add `value` to `key`
+- You can remove values of a map using the `.remove(key)` function that will remove the key value pair bound to `key` from the map
