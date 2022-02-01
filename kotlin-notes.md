@@ -345,3 +345,68 @@ I have very little kotlin experience at the time of writing this.  I will be fol
 - You can get all values at once with `mapName.values`
 - You can add values to a map using the `.put(key, value)` function that will add `value` to `key`
 - You can remove values of a map using the `.remove(key)` function that will remove the key value pair bound to `key` from the map
+
+## Loops
+### For Loops
+- For loops are used to loop a **KNOWN** amount of times
+- A definition of a for loop:
+  ```
+  for(i in x..y) {
+    println(i) // x and y are ints. can be int literal or expression
+  }
+  ```
+### Control the iteration of a for loop
+- To create a `reverse` range, use the `downTo` keyword keyword
+  ```
+  for(i in x downTo y) {
+    println(i) // iterate from x down to y
+  }
+  ```
+- To create a range excluding the upper boundary use thte `until` keyword
+  ```
+  for(i in x until y) {
+    println(i) // iterates from x to (y-1)
+  }
+  ```
+- To iterate by a non 1 value, use the `step keyword`
+  ```
+  for(i in x..y step z) {
+    println(i) // iterates from x to y with a z stepsize
+  }
+  ```
+### Iterating through collections
+- You can use the structure of a collection as an iterator for a for loop
+  ```
+  val numbers = listOf(x, y, z)
+  for (num in numbers) {
+    println(num)
+  }
+  ...
+  x
+  y
+  z
+  ```
+- To iterate through the `indices` of a collection use
+  ```
+  val numbers = listOf(x, y, z)
+  for (index in numbers.indices) {
+    println(index)
+  }
+  ...
+  0
+  1
+  2
+  ```
+- You can get the `index` and `element` by using the `.withIndex()` function
+  ```
+  ```
+  val numbers = listOf(x, y, z)
+  for ((index, num) in numbers.withIndex()) {
+    println("value: $num, index: $index")
+  }
+  ...
+  value: x, index: 0
+  value: y, index: 1
+  value: z, index: 2
+  ```
+- 
