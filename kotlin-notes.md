@@ -492,3 +492,36 @@ I have very little kotlin experience at the time of writing this.  I will be fol
   ```
   val example = { arg1: type, arg2: type -> //body}
   ```
+
+## Classes
+### Creating Classes
+- Classes in Kotlin are declared at the top of the file and outside of the main
+  ```
+  class Name {
+    //body
+  }
+- In the class body you can define variables, constructors, and methods
+- You create an instance of a class by setting a variable equal to the constructor of your class
+  ```
+  val myClass = className()
+  ```
+### Primary Constructor
+- To pass variables to the constructor of a class, you must change the declaration of the class to take variables
+  ```
+  class myClass(var arg1: type, var arg2: type) {
+    //body
+  }
+
+### Init Block
+- The `init` block is used for initializing classes with additional logic
+  ```
+  class myClass(var arg1: type, var arg2: type) {
+    var item: type
+
+    init {
+      // some logic to assign a value to item or some other logic depending on the arguments
+    }
+  }
+
+### Member Functions
+- Member functions are functions defined within a Class.  These extend the use of classes and objects to make them functional
