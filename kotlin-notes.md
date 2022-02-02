@@ -460,3 +460,35 @@ I have very little kotlin experience at the time of writing this.  I will be fol
       }
     }
   }
+
+## Functions
+### Creating and Calling functions
+- The declaration of functions contains various bits of information regarting the inputs and outputs of functions
+  ```
+  fun functionName(arg1: Type): returnType {
+    // body
+  }
+  ```
+- `Arguments` are pieces of data that are used as inputs for functions in order to produce dynamic results
+- You can have any number of arguments
+- You can `name` or set `default` values for arguments.
+  - `Naming` arguments means you can reference the argument name while calling the function to improve readability
+  - `Default` arguments are set as a default value during the function declaration
+
+### Return Statements
+- Functions have the ability to return a value from a function to then be acted on later
+
+### Single Expression Functions
+- Single expression functions are functions that can be written with a single line of code
+
+### Function Literals
+- Function literals are unnamed functions that are treated as a value assigned to variables.  These can be passed as arguments or returned from functions as well
+  ```
+  val example = fun(arg1: type, arg2: type): type {
+    // body
+  }
+  ```
+- A much more concise way of doing this is through the use of lambda expressions
+  ```
+  val example = { arg1: type, arg2: type -> //body}
+  ```
