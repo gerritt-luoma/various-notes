@@ -409,4 +409,54 @@ I have very little kotlin experience at the time of writing this.  I will be fol
   value: y, index: 1
   value: z, index: 2
   ```
-- 
+
+### Iterating Through Maps
+- You can loop through they key value pairs of a map by looping through the `items` of a map
+  ```
+  for(item in mapOfItems){
+    println("${item.value} ${item.key}")
+  }
+  ```
+- You can also destructure the key value pairs into their own variables with
+  ```
+  for((itemKey, itemValue) in mapOfItems) {
+    println("$itemKey $itemValue)
+  }
+  ```
+- You can also get the keys and values to loop through by using the `.keys` and `.values` properties of maps
+
+### While loops
+- While loops are used when you are looping an unknown number of times
+- They are similar to if statements in that they check a condition and if it is true, it will execute the block of code contained by the while loop
+- If the condition is false when the code first reaches the while loop, the while loop will never execute 
+
+### Do While Loops
+- Do while loops are similar to that of while loops but they will always execute at lease once even if the condition of the while loop starts off false
+  ```
+  val condition = false
+  do {
+    print("This happens once")
+  } while(condition)
+  ...
+  This happens once
+  ```
+### Nested Loops
+- You can nest any kind of loop any number of times.  Be careful as adding loops will add to runtime and can cause slow code if not done properly
+
+### Jump Expressions
+- Jump expressions are used to change the standard behavior of loops by exiting a loop early or skipping a single repetition
+- The `break` expression is used to exit a loop at a particular iteration
+- The `continue` expression will skip the rest of the current iteration of the loop but will keep the loop going if there are any more iterations
+  - This can be used to improve performance by removing unneeded operations in loops
+
+### Labeled Jump Expressions
+- In order to use jump expressions within nested loops, you can label outer loops of nested loops to execute jump expressions from inside inner loops
+  ```
+  val values = listOf(1,2,3)
+  outer@ for(num1 in game) {
+    for(num2 in game) {
+      if(num1 == 2) {
+        break@outer
+      }
+    }
+  }
