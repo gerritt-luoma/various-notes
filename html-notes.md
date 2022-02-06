@@ -122,4 +122,30 @@
   ```
   <!-- This is a comment -->
   ```
-  
+
+## Tables
+- Tables are useful for organizing and displaying content on the screen
+- You create the table by using the `table` element
+- You add row elements to the table by using the `tr` elements
+- To actually add data to the rows of tables, you must use the `td` (table data) element
+  ```
+  <table>
+    <tr>
+      <td>73</td>
+      <td>81</td>
+    </tr>
+  </table>
+  ```
+- To add headings to the rows and columns of tables, you  use the `th` element
+  - `th` elements have an attribute known as `scope`.  The scope is used to define if the heading is a `row` or `col` heading
+- To give your tables a border to make it easier to read, you must use CSS
+  ```
+  table, td {
+    border: 1px solid black;
+  }
+  ```
+- You can span across multiple columns in a table by using the `colspan` attribute of a `td`.  You set this attribute to an integer wrapped in quotations specifying how many columns you want it to display across
+- Similar to `colspan` you can have a `td` span across multiple rows by using the `rowspan` attribute
+- Sometimes tables will be so long that you will want to section them off.  You can use the `tbody` element to section the table off to make it more easily readable.  You should enclose the data in the `element` but leave the `column headings` outside of the body
+- The `column headings` should be placed within the `thead` element of a table.  This will apply the column headings to each `tbody` element
+- You can add a footer to a table using the `tfoot` element
