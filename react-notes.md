@@ -136,3 +136,48 @@
     "Hello, world"
   );
   ```
+
+
+## React Components
+- A react component is a small reusable piece of code that is responsible for one job
+- You can define components using either Javascript `class` extension or `functions`
+- You define a component once and then you can render them as many times as you want
+- Defining a component:
+  ```
+  class MyComponent extends React.Component {
+    render() {
+      // your JSX
+      return <your jsx>
+    }
+  }
+  ```
+- Component names **must** start with a capital letter.  They follow the `UpperCamelCase` naming convention
+
+### The render function
+- Within the body of a react component, there exists a required method.  This is the `render()` function.
+- The `render()` function must contain a return statement.  Most of the time it will return JSX
+- The render function can contain more than just the return statement.  The render function can contain logic before the return to act upon your data and change what is rendered.
+  - This logic needs to go within the render function.  
+- You can define functions within the class to be called in the render function
+
+
+### Creating an instance
+- If you have a component named `MyComponent` then you will create an instance of it as such:
+  ```
+  <MyComponent />
+  ```
+- You can pass properties to React components in the same way you can give attributes to HTML
+  ```
+  <MyComponent name=<value> />
+  ```
+- The props can then be accessed within the component using `this.props.<propName>`
+  ```
+  class MyComponent extends React.Component {
+    render() {
+      return <h1>{this.props.name}</h1>
+    }
+  }
+  ```
+
+### Event listeners in components
+- You can define event listeners for components as if they were functions of the `class`
