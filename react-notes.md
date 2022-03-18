@@ -181,3 +181,55 @@
 
 ### Event listeners in components
 - You can define event listeners for components as if they were functions of the `class`
+
+## Components and Props
+### Components in other components
+- Components use the render method to return JSX.  One type of JSX that they can return are other React components!
+- To include other components in a React component, first you must `import` the component into your file
+  ```
+  import { Component } from '<file path to component>'
+  ```
+- In order for you to `import` a component, you must first `export` that component from it's respective file
+  ```
+  export class Component extends React.Component {
+    // component logic
+  }
+  ```
+- The ability to nest components is the true power of react.  Each component on its own is small and insignificant but as you create and render more components, your page will come to life
+### Component props
+- Not all components are static components.  Most of the time you will want to pass data to your Components in the form of `props`
+- You pass props into components the same way you pass attributes to HTML elements
+  ```
+  <MyComponent propName=<value> />
+  ```
+- `props` are then referenced in your `class` components in this manner:
+  ```
+  this.props.propName
+  ```
+- `props` will **ALWAYS** be the name used to reference the props passed to `class` components.  You cannot access class component props in any way other than `this.props`
+- Not only can you use props to be rendered on the screen but you can also pass props to be used to make decisions on what to render
+- You can even pass event handling functions as props!  If you create a event handler as a method of your `class` component, you can pass it to a component with:
+  ```
+  <Component propName={this.handlerName} />
+  ```
+### Naming props
+- You can name props anything that you want as long as you don't assign them a JS restricted name.  
+- Name your props with the camelCase convention
+- When defining event handlers to be passed as props it is best to name both the prop and the event handler something relevent to what the function does
+  - You can even name event handling functions reserved HTML names like `onClick` or `onHover`.  This is because those events are reserved names in `HTML` but when passing a prop to a component, it is JavaScript 
+
+### Children
+- Every `class` components props has a property called `children`
+- If you used a non self closing component tag, all info passed between the opening and closing tags will be in the `children` property
+- This means you can pass more JSX between the opening and closing tags of a component and it will be referenced with `children`
+
+### defaultProps
+- What should you do if someone doesn't pass all of the props to your components?
+- Normally if the props is missing, then nothing will render in the place of the prop
+- You can give your component `class` a property known as `defaultProps`
+- Populate `defaultProps` with an object containing the default values that you wish to be displayed if a prop is missing
+- You define `defaultProps` **OUTSIDE** of the `class` component with
+  ```
+  Component.defaultProps = // props object
+  ```
+-
