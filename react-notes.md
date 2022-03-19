@@ -232,4 +232,58 @@
   ```
   Component.defaultProps = // props object
   ```
--
+
+
+## Handling state in components
+- As mentioned previously, not all components in React are static.  Some componenets are `dynamic` meaning the data they display can change or they can change depending on user activity
+- The two ways to handle dynamic components are through the use of `props` and `state`
+- In order to manage state in a `class` component, you must give your component a constructor to give your component a state property like this:
+  ```
+  class Component extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { 
+        // initial state information
+      };
+    }
+  }
+  ```
+- This is required because state is tracked internally as opposed to the state being passed in externally
+- Access the state object in the same way as props by using `this.state`
+- You update your state by calling the `this.setState()` function
+- The argument that you pass to `this.setState()` is an object containing the key/value pairs of the state values you wish to change
+- In order to call `this.setState()` within methods defined in the `class` component, you must first bind `this` to the function like so:
+  ```
+  class Component extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { stateName: <state value> }
+      this.stateFunction = this.stateFunction.bind(this);
+    }
+
+    stateFunction() {
+      this.setState({
+        stateName: <new value>
+      })
+    }
+  }
+  ```
+- `this.setState` automatically calls the render method meaning your components are rerendered whenever the state is changed
+
+### Stateless components from stateful components
+- One pattern for react is having a a stateful parent component with a stateless child component
+- The parent component passes it's state down to the child component
+
+### Note
+- Though you can change the state of a component, you must **NEVER** attempt to change the props of your component
+
+### Child components update parent component state
+- The steps to change the parent state from a child go as such:
+  1. Create method in parent class capable of changing its state
+  2. Pass that method down to the child class as a prop
+  3. Create an event handling method in the child class that calls the passed prop method
+  4. Use the event handling method in the child JSX
+
+### Child components updating siblings
+- You should always aim to have one component handle one job.  An example is to have one component render a name and another component to change the name
+- This is very simple to do.  Simply have one of the components changing the state of the parent component while the other component renders the value
