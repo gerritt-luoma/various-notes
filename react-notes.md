@@ -287,3 +287,76 @@
 ### Child components updating siblings
 - You should always aim to have one component handle one job.  An example is to have one component render a name and another component to change the name
 - This is very simple to do.  Simply have one of the components changing the state of the parent component while the other component renders the value
+
+## HTTP Requests
+- **Context**: HTTP stands for `Hypertext Transfer Protocol` and is used for structuring requests/responses over the web
+- TCP stands for `Transmission Control Protocol`
+- `TCP` manages channels between browsers and servers while `HTTP` is the command language that both sides of the connection follow to communicate properly
+- `REST` stands for `Representational State Transfer` and is used with `HTTP` to send information from one place to another over the web
+  - `RESTful` systems are stateless meaning they don't need to know anything about the server or the destination for them to communicate 
+  - Statelessness is achieved through the use of `resources` as opposed to `commands`
+### Making requests with REST
+- REST requires clients to make a request to a server to retrieve, store, or alter data stored on the server
+- Requests typically consist of:
+  - An `HTTP` verb
+    - There are 4 basic `HTTP` verbs
+    - `GET`     --> retrieving a specific resource or collection of resources
+    - `POST`   --> creating a new resource
+    - `PUT`    --> Updating a specific resource by id
+    - `DELETE` --> Removing a specific resource by id
+  - A `header`
+  - A `path`
+  - An optional `request body`
+- A `RESTful` response contains a status code.  Different status codes have different meanings
+  - `200 (OK)` --> The standard response for a successful request
+  - `201 (CREATED)` --> The standard response for a successful creation request
+  - `204 (NO CONTENT)` --> The standard response for a successful request where nothing is being returned in the body
+  - `400 (BAD REQUEST)` --> The standard response for a bad request due to bad syntax, excessive size, or other client errors
+  - `403 (FORBIDDEN)` --> The standard response when the client doesn't have permission for what they requested
+  - `404 (NOT FOUND)` --> The standard response when the requested data doesn't exist or was deleted
+  - `500 (INTERNAL SERVER ERROR)` --> The standard response when something goes wrong within the server
+
+### HTTPS
+- Since `HTTP` requesets can be read by anyone at network junctions, it is not good to use for sending/receiving sensitive data like passwords or credit cards
+- `HTTPS` stands for `HTTP Secure` and is used for encrypting requests/responses
+- In order to support `HTTPS` on your site, you must apply for a certificate from any Certificate Authority
+
+### How to create an XHR GET request
+```
+const xhr = new XMLHttpRequest; // create XMLHttpRequest
+const url = 'https://api-to-call.com/endpoint';
+xhr.responseType = 'json'; // set response type to json
+// set the state change to a function
+xhr.onreadystatechange = () => {
+  if(xhr.readyState === XMLHttpRequest.DONE) {
+    return xhr.response; // if it is ready, return the response
+  }
+}
+
+xhr.open('GET', url); // open the request as a GET request
+
+xhr.send(); // send the request
+```
+
+### How to create an XHR POST request
+```
+const xhr = new XMLHttpRequest; // create request
+const url = 'https://api-to-call.com/endpoint'; // create URL
+const data = JSON.stringify({id: '200'}); // create data we want to post
+
+xhr.responseType = 'json'; // set response type to json
+
+// set callback function for when request is done
+xhr.onreadystatechange = () => {
+  if(xhr.readyState === XMLHttpRequest.DONE) {
+    return xhr.response;
+  }
+}
+
+xhr.open('POST', url); // open the request
+
+xhr.send(data); // send the data with the request
+```
+
+### Making requests in ES6
+- Thankfully, the previously used code is now obsolete due to the introduction of `fetch()`, `async`, and `await` in ES6 which makes requests **MUCH** easier and cleaner
