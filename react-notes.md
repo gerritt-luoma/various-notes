@@ -358,5 +358,93 @@ xhr.open('POST', url); // open the request
 xhr.send(data); // send the data with the request
 ```
 
-### Making requests in ES6
+## Making HTTP requests in ES6
 - Thankfully, the previously used code is now obsolete due to the introduction of `fetch()`, `async`, and `await` in ES6 which makes requests **MUCH** easier and cleaner
+- By using `async` and `await` you are able to make your asynchronous code like `fetch()` look like your synchronous code
+
+### GET requests with `fetch()` using `promises`
+- Using a promise with fetch requires chaining `.then()` functions to the fetch that will run once the fetch call completes
+- An example of using promises and chaining `.then()` calls with fetch:
+  ```
+  const wordQuery = inputField.value;
+  const endpoint = `${url}${queryParams}${wordQuery}`;
+  
+  // Steps explained
+  // First, call fetch with the endpoint (url for RESTful api)
+  // Second, chain a .then call which will be called when fetch resolves
+  // This first .then call has the fetch response as its argument
+  // If the response is ok, then return the json of the response. Else, 
+  // throw an error.
+  // The second .then call is evaluated if the first .then call
+  // doesn't result in an error.
+  fetch(endpoint, {cache: 'no-cache'}).then(response => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error('Request failed!');
+  }, networkError => {
+    console.log(networkError.message)
+  }).then(jsonResponse => {
+    renderResponse(jsonResponse);
+  })
+  ```
+
+### POST requests with `fetch()` and `promises`
+- This is done in a very similar way as a `GET`.  You just add `POST` as a method and a body all in an object like so:
+  ```
+  fetch('https://api-to-call.com/endpoint', {
+    method: 'POST',
+    body: JSON.stringify({
+      id: '200'
+    })
+  }).then(response => {
+    if(response.ok) {
+      return response.json();
+    }
+    throw new Error('Request failed!');
+  }, networkError => {
+    console.log(networkError.message);
+  }).then(jsonResponse => {
+    return jsonResponse;
+  })
+  ```
+
+### GET Requests using `async` `await`
+- Through the use of `async`/`await` we are able to make our async code look more like our synchronous code.  In the previous sections using promises, we were chaining together calls to `.then()` which can get extremely ugly
+- A basic `async`/`await` function for fetching an `API` looks like this:
+  ```
+  const getData = async () => {
+    try {
+      const response = await fetch('https://api-to-call.com/endpoint');
+      if(response.ok) {
+        const jsonResponse = await response.json();
+        return jsonResponse;
+      }
+      throw new Error('Request failed!');
+    } catch(error) {
+      console.log(error);
+    }
+  }
+  ```
+
+### POST requests using `async` `await`
+- Similar to the `async`/`await` version of `GET` requests, the `POST` version is also much, much cleaner
+  ```
+  const getData = async () => {
+    try {
+      const response = await fetch('https://api-to-call.com/endpoint', {
+        method: 'POST',
+        body: JSON.stringify({
+          id: 200,
+        }),
+      });
+      if(response.ok) {
+        const jsonResponse = await response.json();
+        return jsonResponse;
+      }
+      throw new Error('Request failed!');
+    } catch(error) {
+      console.log(error);
+    }
+  }
+  ```
