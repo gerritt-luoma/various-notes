@@ -448,3 +448,17 @@ xhr.send(data); // send the data with the request
     }
   }
   ```
+
+## Authentication and OAuth
+- Authentication is used to determine and _confirm_ the identities of certain users
+- Authentication is used to ensure the correct content is shown to users but it is more importantly used to ensure the incorrect content is **NOT** shown to the wrong users
+  - Ex: You won't want random users to have access to your admin tools
+- Types of authentication:
+  - Email/Password Authentication: 
+    - This is the most common form of authentication.  You have the user input an email and a password for account creation.  If logged in successfully, the server will grant the users computer a token for the client to use in future requests.  These tokens will expire over time requiring the user to log in again in the future.
+  - API Keys:
+    - API keys are used to authenticate for calling APIs.  This makes it so your apis are more secure and are only being used by the correct people
+    - These keys are also useful to track the type and frequency of your users activity
+  - OAuth:
+    - OAuth is an **open standard** and is used to grant permission for applications to access user information without them needing to give up their passwords
+    - OAuth allows individuals to sign in on your app/site by using their profile from another site like Google, Facebook, or Twitter
