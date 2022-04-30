@@ -73,8 +73,3 @@
     
     fs.readFile('./file.txt', 'utf-8', readDataCallback);
     ```
-
-### Create an HTTP Server
-- The main reason why Node was created was to be able to create HTTP servers
-- You can do this with the `http` core module.  This is also made easier with the `express` module from `NPM`
-- 
