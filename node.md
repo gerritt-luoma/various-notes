@@ -73,3 +73,91 @@
     
     fs.readFile('./file.txt', 'utf-8', readDataCallback);
     ```
+
+## Express
+- Express is a Node module that can be used for anything from static file servers to REST api to full production servers
+### How to start a server
+- First, you must require the `express` module and create the `app`.  Once you have these in your file, you can then start listenin on a port to start the server
+  ```
+  // Import the express library here
+  const express = require('express');
+  // Instantiate the app
+  const app = express();
+
+  const PORT = process.env.PORT || 4001;
+
+  // Start listening on the port
+  app.listen(PORT, () => {
+    console.log(`Server is now ilstening on port ${PORT}`);
+  });
+  ```
+### How to create a route
+- After the server starts listening, it can take nearly any request
+- We specify how we take these requests by creating `routes`
+- A `route` is the path after the hostname and port of a url
+  - Ex: localhost:3000`/this/is/the/path`
+- Since each request will be associated with an HTTP verb (i.e. GET, POST, DELETE, etc) our app can have each verb for each `route`
+- An example of a `GET` for the route `/expressions`:
+  ```
+  app.get('/expressions', (req, res, next) => {
+    console.log(req);
+  });
+  ```
+- The first argument for these functions is a string containing the `route` for the request
+- The second argument is a callback function for when a request is received.  The arguments are the request (`req`), the response (`res`), and the `next` middleware function
+
+### How to send a response
+- Once we create our route, we must create the response.  HTTP has a **one request one response** rule where you must always send exactly one response to a request
+- Express servers send responses using the send method of the response object with `res.send(<data to send>)`
+  ```
+  app.get('/expressions', (req, res, next) => {
+    console.log(req);
+    const data = { name: 'Gerritt' };
+    res.send(data.json());
+  });
+  ```
+
+### Dynamic routing
+- Routing becomes much more powerful with dynamic routing.  The `/expressions` route mentioned previously is a static route meaning it has only one set of functionality for each verb
+- You can use `route parameters` to create a dynamic route that can allow users to pass different values to the same route to achieve different results
+- `Route Parameters` are route path segments that begin with a semi-colon.  These act as wildcards that match any text at that segment of the path.  An example is `/expressions/:id` which would allow someone to access a specific expression id
+- Express parses all `route parameters`, extracts their values, and attaches them to the request object as an object themselves found at `req.params`
+- The keys of `req.params` will match the `route parameters` of your route
+
+### Sending status codes
+- Express allows for setting [status codes](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) before sending the response to any given request
+- These status codes provides the client with information on how the request was handled
+- You can set the `status code` of a response object by using the `.status()` method of the response
+- For ease of use, other response methods can be chained onto `.status()`.  An example would be `res.status(<code>).send(<data>)`
+  ```
+  app.get('/expressions/:id', (req, res, next) => {
+    const expression = getElementById(req.params.id, expressions);
+    if(expression) {
+      res.status(200).send(expression);
+    } else {
+      res.status(404).send('Expression not fount');
+    }
+  });
+  ```
+
+### Additional HTTP methods
+- Three other incredibly important HTTP verbs other than `GET` are `POST`, `PUT`, and `DELETE`
+  - `POST` requests are used to create new resources/entries in the database
+  - `PUT` requests are used to update the resources already in the database
+  - `DELETE` is pretty self explanatory.  It deletes the requested resource
+- The express `app` has methods for all HTTP verbs.  If you want to support a `GET` and a `POST` on the same route, you will have to have:
+  ```
+  // GET method for route
+  app.get('/route/to/endpoint', (req, res, next) => {
+    ...
+  });
+  // POST method for route
+  app.post('/route/to/endpoint', (req, res, next) => {
+
+  });
+  ```
+
+### How to use queries
+- `Query strings` appear at the end of URL paths and are indicated with a question mark
+- These query strings are formatted as `?query_1=val1&query_2=val2...&queryN=valN` and are appended to the end of a route parameter
+- These strings aren't considered part of the route path and are parsed into an object found at `req.query` in the request object
