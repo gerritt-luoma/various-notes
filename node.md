@@ -161,3 +161,42 @@
 - `Query strings` appear at the end of URL paths and are indicated with a question mark
 - These query strings are formatted as `?query_1=val1&query_2=val2...&queryN=valN` and are appended to the end of a route parameter
 - These strings aren't considered part of the route path and are parsed into an object found at `req.query` in the request object
+
+
+## Express Routers
+- Using express in a single file gets very cumbersome very fast as your project begins to expand
+- Express routers allows you to split your express routes into many files to keep the files smaller and more manageable
+- An express router provides a subset of the express methods
+- To create an instance of a router, you must invoke the `.Router()` method in the top level file of your project (The main app file)
+- To then use the router, you need to mount a certain `route path` in the first argument of the `app.use()` method, and provide the router as the second argument
+  ```
+  // create the router
+  const expressionsRouter = express.Router();
+
+  // mount the route to it
+  app.use('/monsters', expressionsRouter);
+  ```
+
+### Using multiple router files
+- You will typically want to have each router in its own dedicated file and simply require them in the main file
+- This keeps our code short, clean, and separated
+  ```
+  // expressions.js
+  const express = require('express');
+  const expressionsRouter = express.Router();
+
+  expressionsRouter.get('/', (req, res, next) => {
+    res.send(expressions);
+  });
+
+  module.exports = expressionsRouter;
+  ```
+  ```
+  // app.js
+  const express = require('express');
+  const app = express();
+  const expressionsRouter = require('./expressions.js');
+
+  app.use('/expressions', expressionsRouter);
+  ```
+- 
