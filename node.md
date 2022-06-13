@@ -199,4 +199,32 @@
 
   app.use('/expressions', expressionsRouter);
   ```
-- 
+
+## Express Middlewares
+- One coding principle to follow to help reduce bugs and improve readability is the **D**on't **R**epeate **Y**ourself (DRY) principle.  Your goal is to use as little code as possible to get your tasks done
+- When coding express routes you may find yourself writing the same code over and over which opens the door for silly bugs
+- You can have the same code run before every request by using `middleware`
+- `Middleware` is code that runs between the server receiving a request and sending the response
+- `Middleware` can perform certain logic on the `req` and `res` objects such as:
+  - Perform logic based on the request
+  - Attach info to the response
+  - Give a status to the response
+  - Send the response to the user
+- You denote a middleware by using the `app.use()` method
+  ```
+  // this simple middleware just logs that a request was received
+  app.use((req, res, next) => {
+    console.log('Request received');
+  });
+  ```
+
+### Using the next() function
+- The previous code example is great for logging but it will cause one fatal flaw in our code.  It will not go on to the next function used for processing the request to our server! 
+- To fix this, we add a call to the `next()` function.  This is the third argument in all of our route callback functions
+
+### app.use() for specific routes
+- The `app.use()` method can take an option first argument of a route to specify the middleware should only be ran on that specific route
+- This is very useful for adding additional logging or checking specific values of the request
+- If the route of the middleware is `/expressions` it will only run on requests to the `/expressions` route.  It will not run for any additional routes such as `/expressions:id`
+
+// finished express
