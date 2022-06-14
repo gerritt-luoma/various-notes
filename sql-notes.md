@@ -120,3 +120,67 @@
   FROM table_name
   HAVING FUNCTION(col_name) <condition>
   ```
+
+
+## Working with multiple tables
+- One of the main principles of SQL is to not repeat data within the database.  You can prevent repetition by placing data into separate tables and referene the data by an ID
+- An example of a subscription and order system with users would have tables as such:
+  - Orders:
+    - order_id
+    - customer_id
+    - subscription_id
+    - purchase_date
+  - Subscriptions:
+    - subscription_id
+    - description
+    - price_per_month
+    - subscription_length
+  - Customers:
+    - customer_id
+    - customer_name
+    - address
+- `JOIN`: The join command is used to combine the outputs of two (or more) tables into one output.  To output a specific row of both tables, you can use the `ON` keyword to have a constraint on what rows to output
+  ```
+  SELECT *
+  FROM table_one
+  JOIN table_two
+    ON table_one.col_name = table_two.col_name
+  ```
+  - Inner joins: A base join is also known as an inner join.  Inner joins only include rows that match our `ON` condition which can result in missing data
+  - `LEFT JOIN`: Left joins keep all rows from the first table regardless of whether there is ssa matching row in the second table
+  - `CROSS JOIN`: The Cross join is used to compine all the rows of one table with all the rows of another table regardless of relation.  It will create an output showing every combo of the chosen columns
+    ```
+    SELECT shirts.shirt_color,
+      pants.pants_color
+    FROM shirts
+    CROSS JOIN pants;
+    ```
+- `PRIMARY KEY`
+  - In the previous example with the orders, subscriptions, and users each table had a unique ID to identify each entry.  This is known as the `Primary key`
+  - Primary keys CANNOT be null
+  - Each primary key MUST be unique
+  - A table cannot have more than one primary key column
+- `FOREIGN KEY`
+  - When a primary key is referenced from another table it is known as a `Foreign Key`
+- `UNION`: A `UNION` is used to stack one table on top of the other.  Both tables must have the same number of columns and have the same data types in each column
+  ```
+  SELECT *
+  FROM table1
+  UNION
+  SELECT *
+  FROM table2;
+  ```
+- `WITH`: Sometimes we want to combine a table with the result of another operation/query.  We can do this using `WITH`
+  ```
+  WITH previous_results AS (
+    SELECT ...
+    ...
+    ...
+    ...
+  )
+  SELECT *
+  FROM previous_results
+  JOIN table_one
+    ON _____ = _____;
+  ```
+  
