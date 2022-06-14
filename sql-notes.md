@@ -72,3 +72,51 @@
     END AS output_name
   FROM table_name
   ```
+
+## Aggregate Functions
+- Aggregate functions are used to perform calculations on our dable.  When a calculation is used on multiple rows it is known as an **aggregate**
+- `COUNT()`: The count function is used to count the number of non empty values in a column
+  - You can use query operators to make the value being summed more specific
+  ```
+  SELECT COUNT(*)
+  FROM table_name; // returns the number of rows in the table
+  ```
+- `SUM()`: The sum function is used to sum a column into one single value
+  ```
+  SELECT SUM(col_name)
+  FROM table_name; // returns a number for the sum
+- `MAX()`/`MIN()`: The min and max functions return the min/max value from within a column of a table
+  ```
+  SELECT MIN(col_name)
+  FROM table_name;
+
+  SELECT MAX(col_name)
+  FROM table_name;
+  ```
+- `AVG()`: The average function returns the average value of a column of the table
+  ```
+  SELECT AVG(col_name)
+  FROM table_name;
+- `ROUND()`: The round function is used to round the values of a column and takes two inputs.  The first input is a column name while the second input is an integer specififying the number of decimal places it should round to.
+  ```
+  SELECT ROUND(col_name, num)
+  FROM table_name
+  ```
+- Using `GROUP BY` with aggregate functions can be very useful.  If you want to get the average for a column based on the value of another column, you can get the average for every value of column 2
+  ```
+  SELECT AVG(col_one)
+  FROM table_name
+  GROUP BY col_two
+  ```
+- You can even `GROUP BY` based on a calculation
+  ```
+  SELECT *
+  FROM table_name
+  GROUP BY ROUND(col_one)
+  ```
+- `HAVING`: The having statement is similar to the `WHERE` operator but is used for when we want to have a condition based on a function.  These statements always come after `GROUP BY` statements but before `ORDER BY` and `LIMIT` statements
+  ```
+  SELECT *
+  FROM table_name
+  HAVING FUNCTION(col_name) <condition>
+  ```
