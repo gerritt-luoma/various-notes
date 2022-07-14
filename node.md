@@ -1,3 +1,26 @@
+- [Node Notes](#node-notes)
+  - [Basics](#basics)
+    - [Accessing the Process Object](#accessing-the-process-object)
+    - [Core and Local Modules](#core-and-local-modules)
+    - [Node Package Manager](#node-package-manager)
+    - [Event-Driven Architecture](#event-driven-architecture)
+    - [Asynchronous JavaScript with Node](#asynchronous-javascript-with-node)
+    - [Errors](#errors)
+    - [Filesystem](#filesystem)
+  - [Express](#express)
+    - [How to start a server](#how-to-start-a-server)
+    - [How to create a route](#how-to-create-a-route)
+    - [How to send a response](#how-to-send-a-response)
+    - [Dynamic routing](#dynamic-routing)
+    - [Sending status codes](#sending-status-codes)
+    - [Additional HTTP methods](#additional-http-methods)
+    - [How to use queries](#how-to-use-queries)
+  - [Express Routers](#express-routers)
+    - [Using multiple router files](#using-multiple-router-files)
+  - [Express Middlewares](#express-middlewares)
+    - [Using the next() function](#using-the-next-function)
+    - [app.use() for specific routes](#appuse-for-specific-routes)
+  - [Node SQLite](#node-sqlite)
 # Node Notes
 ## Basics
 - Node is a server runtime for javascript.  It provides the ability to run JavaScript programs on your computer instead of just in the browser/embedded in html
@@ -227,4 +250,12 @@
 - This is very useful for adding additional logging or checking specific values of the request
 - If the route of the middleware is `/expressions` it will only run on requests to the `/expressions` route.  It will not run for any additional routes such as `/expressions:id`
 
-// finished express
+
+## Node SQLite
+- You can manage SQLite with Javascript to automate queries on request.
+- To use sqlite3 in a JavaScript program you need to install and import the `sqlite3` package and create a database object
+  ```
+  const sqlite3 = require('sqlite3');
+  const db = new sqlite3.Database('<filepath to db>');
+  ```
+- 

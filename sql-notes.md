@@ -1,3 +1,7 @@
+- [SQL Notes](#sql-notes)
+  - [Querying](#querying)
+  - [Aggregate Functions](#aggregate-functions)
+  - [Working with multiple tables](#working-with-multiple-tables)
 # SQL Notes
 
 ## Querying
