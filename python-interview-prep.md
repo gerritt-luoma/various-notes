@@ -1,3 +1,8 @@
+- [Python Interview Prep](#python-interview-prep)
+  - [Linear Data Structures](#linear-data-structures)
+    - [Singly linked lists](#singly-linked-lists)
+      - [Swapping the value of two nodes in a singly linked list](#swapping-the-value-of-two-nodes-in-a-singly-linked-list)
+    - [Doubly linked lists](#doubly-linked-lists)
 # Python Interview Prep
 I am doing some interview prep using Codecademy's Python technical interview prep course.  These won't be robust notes but instead will be where I store all of the example code I write.
 
@@ -61,6 +66,20 @@ class LinkedList:
           break
         current_node = next_node
 ```
+
+#### Swapping the value of two nodes in a singly linked list
+- Given the input of 2 values (`val1`, `val2`) to find and swap in a **SINGLY** linked list you need to keep track of 4 items:
+  1. `val1`
+  2. The previous node of the node containing `val1`
+  3. `val2`
+  4. The previous node of the node containing `val2`
+- Steps to swap:
+  1. Iterate through the linked list keeping track of the `current_node` and the previous node calling it `node1_prev`.  Once you find the node containing `val1`, `node1_prev` will be the node before it.
+  2. Repeat this process for `val2` calling the previous node `node2_prev`
+  3. If the `node1_prev` is None, node1 was the head of the LL so set the head to `node2`
+  4. Else, set `node1_prev`'s next node to node2
+  5. If `node2_prev` is None, node2 was the head of the LL so set the head to `node2`
+  6. Else, set `node2_prev`'s next node to node1
 
 ### Doubly linked lists
 - Linked lists where each node contains a pointer to the previous and next nodes in the chain
