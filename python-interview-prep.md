@@ -3,6 +3,14 @@
     - [Singly linked lists](#singly-linked-lists)
       - [Swapping the value of two nodes in a singly linked list](#swapping-the-value-of-two-nodes-in-a-singly-linked-list)
     - [Doubly linked lists](#doubly-linked-lists)
+    - [Linear search](#linear-search)
+      - [Time complexity for Linear Search](#time-complexity-for-linear-search)
+      - [Linear search with Python3 to find first occurrence](#linear-search-with-python3-to-find-first-occurrence)
+      - [Linear search with Python3 to find **all** occurrences](#linear-search-with-python3-to-find-all-occurrences)
+    - [Binary Search](#binary-search)
+      - [Time complexity for binary search](#time-complexity-for-binary-search)
+      - [Binary search with recursion](#binary-search-with-recursion)
+      - [Binary search iterative approach](#binary-search-iterative-approach)
 # Python Interview Prep
 I am doing some interview prep using Codecademy's Python technical interview prep course.  These won't be robust notes but instead will be where I store all of the example code I write.
 
@@ -204,4 +212,86 @@ class DoublyLinkedList:
         string_list += str(current_node.get_value()) + "\n"
       current_node = current_node.get_next_node()
     return string_list
+```
+
+### Linear search
+- Linear search is a search algorithm that starts at the beginning of a linear data structure and scans each item one by one until it finds the desired item.  Linear search doesn't need to be used on a sorted structure since it scans each item.
+- Linear search is great for small datasets or if you expect a target to be near the beginning of the set but it is not idea for larger structures.
+
+#### Time complexity for Linear Search
+| Case | Value |
+| ---- | ----- |
+| Worst| O(N)  |
+| Best | O(1)  |
+| Average | O(N/2) |
+
+#### Linear search with Python3 to find first occurrence
+```
+def linear_search(search_list, target_value):
+  for i, value in enumerate(search_list):
+    if value == target_value:
+      return i
+  raise ValueError(f"{target_value} not in list")
+```
+#### Linear search with Python3 to find **all** occurrences
+```
+def linear_search(search_list, target_value):
+  matches = []
+  for i, value in enumerate(search_list):
+    if value == target_value:
+      matches.append(i)
+  if matches:
+    return matches
+  raise ValueError(f"{target_value} not in list")
+```
+
+### Binary Search
+- Binary search is a much more efficient search algorithm that requires the list/array to be sorted prior to searching.  The idea of binary search is that you start in the middle of the structure, check if the middle value is less or greater tahn the target value, and then checking top or bottom half depending on the check
+
+#### Time complexity for binary search
+| Case | Value |
+| ---- | ----- |
+| Worst| O(log(n))  |
+| Best | O(1)  |
+| Average | O(log(n)) |
+
+#### Binary search with recursion
+```
+def binary_search(sorted_list, left_pointer, right_pointer, target):
+  if left_pointer >= right_pointer:
+    return "value not found"
+	
+  mid_idx = (left_pointer + right_pointer) // 2
+  mid_val = sorted_list[mid_idx]
+
+  if mid_val == target:
+    return mid_idx
+  
+  if mid_val > target:
+    return binary_search(sorted_list, left_pointer, mid_idx, target)
+  
+  if mid_val < target:
+    return binary_search(sorted_list, mid_idx + 1, right_pointer, target)
+```
+
+#### Binary search iterative approach
+```
+def binary_search(sorted_list, target):
+  left_pointer = 0
+  right_pointer = len(sorted_list)
+  
+  while left_pointer < right_pointer:
+    mid_idx = (left_pointer + right_pointer) // 2
+    mid_val = sorted_list[mid_idx]
+    
+    if mid_val == target:
+      return mid_idx
+    
+    if target < mid_val:
+      right_pointer = mid_idx
+    
+    if target > mid_val:
+      left_pointer = mid_idx + 1
+  
+  return "Value not in list"
 ```
