@@ -11,6 +11,11 @@
       - [Time complexity for binary search](#time-complexity-for-binary-search)
       - [Binary search with recursion](#binary-search-with-recursion)
       - [Binary search iterative approach](#binary-search-iterative-approach)
+    - [Queues](#queues)
+      - [Queue code example](#queue-code-example)
+    - [Stacks](#stacks)
+      - [Stack code example](#stack-code-example)
+      - [Stack towers of Hanoi](#stack-towers-of-hanoi)
 # Python Interview Prep
 I am doing some interview prep using Codecademy's Python technical interview prep course.  These won't be robust notes but instead will be where I store all of the example code I write.
 
@@ -294,4 +299,199 @@ def binary_search(sorted_list, target):
       left_pointer = mid_idx + 1
   
   return "Value not in list"
+```
+
+### Queues
+- Queues are a data structure with a first in first out (`FIFO`) approach similar to when you get in a line at an amusement park.
+- For queues all you need to keep track of is the front and last so you can enqueue and dequeue the head/tail
+- You can also put a length constraint on the queue to turn it to a "bounded queue"
+  
+#### Queue code example
+```
+class Node:
+  def __init__(self, value, next_node=None):
+    self.value = value
+    self.next_node = next_node
+    
+  def set_next_node(self, next_node):
+    self.next_node = next_node
+    
+  def get_next_node(self):
+    return self.next_node
+  
+  def get_value(self):
+    return self.value
+
+class Queue:
+  def __init__(self, max_size=None):
+    self.head = None
+    self.tail = None
+    self.max_size = max_size
+    self.size = 0
+    
+  def enqueue(self, value):
+    if self.has_space():
+      item_to_add = Node(value)
+      print("Adding " + str(item_to_add.get_value()) + " to the queue!")
+      if self.is_empty():
+        self.head = item_to_add
+        self.tail = item_to_add
+      else:
+        self.tail.set_next_node(item_to_add)
+        self.tail = item_to_add
+      self.size += 1
+    else:
+      print("Sorry, no more room!")
+      
+  # Add your dequeue method below:    
+  def dequeue(self):
+    if not self.is_empty():
+      item_to_remove = self.head
+      print("Removing " + str(item_to_remove.get_value()) + " from the queue!")
+      if self.get_size() == 1:
+        self.head = None
+        self.tail = None
+      else:
+        self.head = item_to_remove.get_next_node()
+      self.size -= 1
+      return item_to_remove.get_value()
+    print("This queue is totally empty!")
+  
+  def peek(self):
+    if self.is_empty():
+      print("Nothing to see here!")
+    else:
+      return self.head.get_value()
+  
+  def get_size(self):
+    return self.size
+  
+  def has_space(self):
+    if self.max_size == None:
+      return True
+    else:
+      return self.max_size > self.get_size()
+    
+  def is_empty(self):
+    return self.size == 0
+```
+
+### Stacks
+- Stacks are a similar structure to queues but instead of following the `FIFO` approach they use first in last out, `FILO` (like in RotSH)
+- Imagine like putting plates into the sink to clean.  The first one put in will be the last one out of the sink when being cleaned
+
+#### Stack code example
+```
+class Node:
+  def __init__(self, value, next_node=None):
+    self.value = value
+    self.next_node = next_node
+    
+  def set_next_node(self, next_node):
+    self.next_node = next_node
+    
+  def get_next_node(self):
+    return self.next_node
+  
+  def get_value(self):
+    return self.value
+
+class Stack:
+  def __init__(self, limit=1000):
+    self.top_item = None
+    self.size = 0
+    self.limit = limit
+  
+  def push(self, value):
+    if self.has_space():
+      item = Node(value)
+      item.set_next_node(self.top_item)
+      self.top_item = item
+      self.size += 1
+      print("Adding {} to the stack!".format(value))
+    else:
+      print("No room for {}!".format(value))
+
+  def pop(self):
+    if not self.is_empty():
+      item_to_remove = self.top_item
+      self.top_item = item_to_remove.get_next_node()
+      self.size -= 1
+      print("Popping " + item_to_remove.get_value())
+      return item_to_remove.get_value()
+    print("Stack is empty.")
+
+  def peek(self):
+    if not self.is_empty():
+      return self.top_item.get_value()
+    print("Stack is empty!")
+
+  def has_space(self):
+    return self.limit > self.size
+
+  def is_empty(self):
+    return self.size == 0
+```
+
+#### Stack towers of Hanoi
+```
+from stack import Stack
+
+print("\nLet's play Towers of Hanoi!!")
+
+#Create the Stacks
+stacks = []
+left_stack = Stack("Left")
+middle_stack = Stack("Middle")
+right_stack = Stack("Right")
+stacks.append(left_stack)
+stacks.append(middle_stack)
+stacks.append(right_stack)
+
+#Set up the Game
+num_discs = int(input("\nHow many disks do you want to play with?\n"))
+while num_discs < 3:
+  num_discs = int(input("Enter a number greater than or equal to 3\n"))
+
+for i in range(num_discs, 0, -1):
+  left_stack.push(i)
+
+num_optimal_moves = 2**num_discs - 1
+print("\nThe fastest you can solve this game is in {0} moves".format(num_optimal_moves))
+#Get User Input
+def get_input():
+  choices = [stack.get_name()[0] for stack in stacks]
+  while True:
+    for i in range(len(stacks)):
+      name = stacks[i].get_name()
+      letter = choices[i]
+      print(f"Enter {letter} for {name}")
+    user_input = input("")
+    if user_input in choices:
+      for i, stack in enumerate(stacks):
+        if user_input == choices[i]:
+          return stack
+        
+#Play the Game
+num_user_moves = 0
+while right_stack.get_size() != num_discs:
+  print("\n\n\n...Current Stacks...")
+  for stack in stacks:
+    print(stack.print_items())
+  while True:
+    print("\nWhich stack do you want to move from?\n")
+    from_stack = get_input()
+    print("\nWhich stack do you want to move to?\n")
+    to_stack = get_input()
+    if from_stack.is_empty():
+      print("\n\nInvalid Move. Try Again")
+    elif to_stack.is_empty() or from_stack.peek() < to_stack.peek():
+      disk = from_stack.pop()
+      to_stack.push(disk)
+      num_user_moves += 1
+      break
+    else:
+      print("\n\nInvalid Move. Try Again")
+
+print(f"\n\nYou completed the game in {num_user_moves} moves, and the optimal number of moves is {num_optimal_moves}")
 ```
