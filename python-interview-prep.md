@@ -16,6 +16,10 @@
     - [Stacks](#stacks)
       - [Stack code example](#stack-code-example)
       - [Stack towers of Hanoi](#stack-towers-of-hanoi)
+  - [Hash Maps](#hash-maps)
+    - [Hash Functions](#hash-functions)
+    - [Collisions](#collisions)
+    - [Hash map code example using open addressing](#hash-map-code-example-using-open-addressing)
 # Python Interview Prep
 I am doing some interview prep using Codecademy's Python technical interview prep course.  These won't be robust notes but instead will be where I store all of the example code I write.
 
@@ -494,4 +498,95 @@ while right_stack.get_size() != num_discs:
       print("\n\nInvalid Move. Try Again")
 
 print(f"\n\nYou completed the game in {num_user_moves} moves, and the optimal number of moves is {num_optimal_moves}")
+```
+
+## Hash Maps
+- Hash maps map keys to a related value(s) and are some of the most efficient data structures for retrieving stored data
+- When you approach a problem that requires data retrieval, hash maps are often the best structure for the task
+- Hash maps require a unique key to map to a single piece of data
+
+### Hash Functions
+- A hash funciton takes an input and returns an array index as the output.  In order to produce an index, the function must know the array length to always produce an index within the length
+- The hash function takes the input, computes a value using a scoring metric (this is the hash), and returns the hash % array length
+- Hash functions are also known as compression functions because they take a large range of inputs and return a defined subset of values (indices)
+
+### Collisions
+- A hash collision occurs when two different inputs hash to the same value which is very bad
+- One strategy to resolve hash maps is called separate chaining.  When a value hashes to an index, add the data into a stored array at the hash index or a linked list
+  - Saving keys: When using separate chaining it is typically a good idea to store the key that was used to produce the collision within the stored data to easily retrieve it later
+
+### Hash map code example using open addressing
+```
+class HashMap:
+  def __init__(self, array_size):
+    self.array_size = array_size
+    self.array = [None for item in range(array_size)]
+
+  def hash(self, key, count_collisions=0):
+    key_bytes = key.encode()
+    hash_code = sum(key_bytes)
+    return hash_code + count_collisions
+
+  def compressor(self, hash_code):
+    return hash_code % self.array_size
+
+  def assign(self, key, value):
+    array_index = self.compressor(self.hash(key))
+    current_array_value = self.array[array_index]
+
+    if current_array_value is None:
+      self.array[array_index] = [key, value]
+      return
+
+    if current_array_value[0] == key:
+      self.array[array_index] = [key, value]
+      return
+
+    # Collision!
+
+    number_collisions = 1
+
+    while(current_array_value[0] != key):
+      new_hash_code = self.hash(key, number_collisions)
+      new_array_index = self.compressor(new_hash_code)
+      current_array_value = self.array[new_array_index]
+
+      if current_array_value is None:
+        self.array[new_array_index] = [key, value]
+        return
+
+      if current_array_value[0] == key:
+        self.array[new_array_index] = [key, value]
+        return
+
+      number_collisions += 1
+
+    return
+
+  def retrieve(self, key):
+    array_index = self.compressor(self.hash(key))
+    possible_return_value = self.array[array_index]
+
+    if possible_return_value is None:
+      return None
+
+    if possible_return_value[0] == key:
+      return possible_return_value[1]
+
+    retrieval_collisions = 1
+
+    while (possible_return_value != key):
+      new_hash_code = self.hash(key, retrieval_collisions)
+      retrieving_array_index = self.compressor(new_hash_code)
+      possible_return_value = self.array[retrieving_array_index]
+
+      if possible_return_value is None:
+        return None
+
+      if possible_return_value[0] == key:
+        return possible_return_value[1]
+
+      retrieval_collisions += 1
+
+    return
 ```
