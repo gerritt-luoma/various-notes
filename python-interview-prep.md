@@ -24,6 +24,10 @@
     - [Recursion](#recursion)
       - [Pseudocode example](#pseudocode-example)
       - [The Base Case and Recursive Step](#the-base-case-and-recursive-step)
+      - [Factorial using recursion](#factorial-using-recursion)
+      - [Flattening lists with recursion](#flattening-lists-with-recursion)
+      - [Fibonacci Sequence with Recursion](#fibonacci-sequence-with-recursion)
+      - [Recursive vs Iterative Traversal](#recursive-vs-iterative-traversal)
     - [Algorithmic Complexity (Big-O)](#algorithmic-complexity-big-o)
 # Python Interview Prep
 I am doing some interview prep using Codecademy's Python technical interview prep course.  These won't be robust notes but instead will be where I store all of the example code I write.
@@ -639,5 +643,52 @@ class HashMap:
   - If you forget your base case or have an insufficient base case you will end up in the recursive equivalent of an infinite loop and the call stack will throw a stack overflow error
   - An example of a base case is if you were mimicing a for loop but with recursion.  If you wanted to do something 20 times, you will have the **INPUT** to the function act as your counting variable and it will not end until you have an input that reaches 20
 - Think of a recursive step as an iteration of a for loop.  Each time the funciton is called it is a recursive step
+
+#### Factorial using recursion
+```
+def factorial(n):
+  if n < 2:
+    return 1
+  return n * factorial(n - 1)
+```
+
+#### Flattening lists with recursion
+```
+def flatten(my_list):
+  result = []
+  for item in my_list:
+    if isinstance(item, list):
+      print("List found!")
+      flat_list = flatten(item)
+      result.extend(flat_list)
+    else:
+      result.append(item)
+  return result
+```
+
+#### Fibonacci Sequence with Recursion
+```
+def fibonacci(n):
+  if n == 1:
+    return 1
+  if n == 0:
+    return 0
+  return fibonacci(n-1) + fibonacci(n-2)
+```
+
+#### Recursive vs Iterative Traversal
+- When searching through a linked list, the iterative approach to traversing through the LL is:
+  ```
+  def find_node_iteratively(self, value):
+  current_node = self.head_node
+ 
+  while current_node:
+    if current_node.value == value:
+      return current_node
+    current_node = current_node.get_next_node()
+ 
+  return None
+  ```
+
 
 ### Algorithmic Complexity (Big-O)
