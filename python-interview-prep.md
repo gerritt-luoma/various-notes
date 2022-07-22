@@ -20,6 +20,11 @@
     - [Hash Functions](#hash-functions)
     - [Collisions](#collisions)
     - [Hash map code example using open addressing](#hash-map-code-example-using-open-addressing)
+  - [Algorithms](#algorithms)
+    - [Recursion](#recursion)
+      - [Pseudocode example](#pseudocode-example)
+      - [The Base Case and Recursive Step](#the-base-case-and-recursive-step)
+    - [Algorithmic Complexity (Big-O)](#algorithmic-complexity-big-o)
 # Python Interview Prep
 I am doing some interview prep using Codecademy's Python technical interview prep course.  These won't be robust notes but instead will be where I store all of the example code I write.
 
@@ -590,3 +595,49 @@ class HashMap:
 
     return
 ```
+
+## Algorithms
+
+### Recursion
+- Recursion is the process of using a function to call itself.
+- When using recursion you attempt to solve a problem by defining the problem in the terms of itself.
+- Recursion is a broad and tricky concept to grasp but is incredibly useful and efficient.
+- Recursion isn't as efficient as iteration due to overhead of the call stack
+#### Pseudocode example
+- Pseudocode example of recursion paired with it's iterative counterpart:
+  ```
+  // recursive
+  function speller( string )
+    if string is empty
+      print "done"
+    print first letter of string
+    call speller with the given string minus the first letter
+
+  // iterative
+  function speller( string )
+    for each letter in the string
+      print the letter
+    print "done"
+  ```
+- When using recursion you must remember the `Call Stack`.  When you are calling a recursive function, the inner most function (the last to be called) will be the first to resolve.
+  - In the recursive pseudocode above if I were to swap the print and call lines you would end up with a completely different output.
+    - Current output inputting "Nat":
+      - N
+      - a
+      - t
+      - done
+    - Output with print and call lines flipped inputting "Nat":
+      - done
+      - t
+      - a
+      - N
+  - This is due to the call stack.  In the current implementation we are printing and **THEN** calling the function again but in the swapped implementation we are calling **FIRST** and then printing meaning all subsequent calls will resolve before the prints.
+
+#### The Base Case and Recursive Step
+- The two fundamental aspects of recursion are the `Base Case` and the `Recursive Step`
+- The `base case` is what determines if the function should continue calling itself or if it should finish execution and resolve the remaining function calls.
+  - If you forget your base case or have an insufficient base case you will end up in the recursive equivalent of an infinite loop and the call stack will throw a stack overflow error
+  - An example of a base case is if you were mimicing a for loop but with recursion.  If you wanted to do something 20 times, you will have the **INPUT** to the function act as your counting variable and it will not end until you have an input that reaches 20
+- Think of a recursive step as an iteration of a for loop.  Each time the funciton is called it is a recursive step
+
+### Algorithmic Complexity (Big-O)
