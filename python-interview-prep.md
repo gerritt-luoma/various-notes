@@ -29,6 +29,11 @@
       - [Fibonacci Sequence with Recursion](#fibonacci-sequence-with-recursion)
       - [Recursive vs Iterative Traversal](#recursive-vs-iterative-traversal)
     - [Algorithmic Complexity (Big-O)](#algorithmic-complexity-big-o)
+      - [Big Theta ($\Theta$)](#big-theta-theta)
+      - [Common runtimes](#common-runtimes)
+      - [Big Omega ($\Omega$) and Big O (O)](#big-omega-omega-and-big-o-o)
+      - [Adding runtimes](#adding-runtimes)
+      - [Asymptotic Examples](#asymptotic-examples)
 # Python Interview Prep
 I am doing some interview prep using Codecademy's Python technical interview prep course.  These won't be robust notes but instead will be where I store all of the example code I write.
 
@@ -692,3 +697,87 @@ def fibonacci(n):
 
 
 ### Algorithmic Complexity (Big-O)
+- When looking at the speed and efficiency of a program or algorithm, we want to look at the number of instructions a computer needs to perform to complete the execution based on the size of the input
+- We look at the size of the input as the value N.  If there is another input we'll consider it M and so on
+- The types of asymptotic behaviors that we look at are the best, average, and worst cases for the program
+  - The best case would be like a binary search finding the value on the first iteration
+  - The average case is what would happen on the average of all runs of the algorithm
+  - The worst case is like if a binary search doesn't find the value until the last iteration or never finds it at all
+- We use asymptotic notation because not all computers operate at the same speed.  Your old mac from 1998 won't run at the same speed as a brand new $4000 gaming computer full of unnecessary RGB lights.  You use asymptotic notation to instead estimate the number of instructions needed to finish execution.
+
+#### Big Theta ($\Theta$)
+- `Big Theta` is the value used to denote the runtime of a program that only has one case of runtime
+- An example of a program with one runtime is a for loop that prints out all the values of a list.  The runtime for this program will always be $\Theta(N)$
+- Or a different example is taking an input and dividing it by 2 in a while loop until it equals 1.  This will always take $log{_2}{N}$ iterations but since we are working in asymptotic notiation we drop the constants and report it at $\Theta(log{N})$
+
+
+#### Common runtimes
+- $\Theta(1)$
+  - This represents a **constant** runtime.  If your program/algorithm does the same thing regardless of input, it has a constant runtime
+- $\Theta(log{N})$
+  - This represents a **logorithmic** runtime.  This is the runtime of a lot of searching algorithms as they don't tend to check every value in the structure
+- $\Theta(N)$
+  - This represents a **linear** runtime.  This is typically the runtime if you iterate through an entire set of data
+- $\Theta(N*log{N})$
+  - This is a typical runtime of sorting algorithms
+- $\Theta(N^2)$
+  - This is **polynomial** runtime. This happens when you have nested for loops or iterate through a multi dimensional array
+- $\Theta(2^N)$
+  - This is an **exponential** runtime.  You will generally see this in recursive algorithms when calling the function multiple time in the same return statement
+- $\Theta(N!)$
+  - This is **factorial** runtime.  You see this when you generate all of the permutations of something
+
+#### Big Omega ($\Omega$) and Big O (O)
+- When a function/algorithm has multiple cases for the runtime we use `Big Omega` to designate the best case runtime
+- For the worst case, we use `Big O`
+- People typically only discuss the `Big O` runtime because you should always be planning for the **worst case** instead of the best or average case
+
+#### Adding runtimes
+- Sometimes a program has multiple things going on and you will need to add together the runtimes
+- For example, if you iterate through a list and then use a while loop to divide a value until it equals 1, you are looking at 2 different runtimes in the same algorithm
+  - In this case you have a runtime of $\Theta(N)$ for the for loop and $\Theta(log{N})$ for the while loop.
+  - For the entire answer you can report $\Theta(N)$ + $\Theta(log{N})$ as the average runtime
+  - When looking at the problem in `Big O` notation, you only report the slowest portion of the program which is $O(N)$
+
+
+#### Asymptotic Examples
+```
+# log N
+def count(N):
+  count = 0
+  while N > 1:
+    N = N//2
+    count += 1
+  return count
+```
+
+```
+# N
+def find_max(linked_list):
+  node = linked_list.get_head_node()
+  max = node.get_value()
+  while node:
+    if max < node.get_value():
+      max = node.get_value()
+    node = node.get_next_node()
+  return max
+```
+
+```
+# N^2
+def sort_linked_list(linked_list):
+  new_linked_list = LinkedList()
+  head = linked_list.get_head_node()
+  while head:
+    node = head
+    max = node.get_value()
+    while node:
+      if max < node.get_value():
+        max = node.get_value()
+      node = node.get_next_node()
+    new_linked_list.insert_beginning(max)
+    linked_list.remove_node(max)
+    head = linked_list.get_head_node()
+  return new_linked_list
+```
+
