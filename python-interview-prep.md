@@ -40,6 +40,10 @@
       - [Heaps](#heaps)
       - [Basic Info](#basic-info)
       - [Example of a Tree Node:](#example-of-a-tree-node)
+    - [Binary Search Trees](#binary-search-trees-1)
+      - [An example in code](#an-example-in-code)
+    - [Heaps](#heaps-1)
+      - [Min heap code example](#min-heap-code-example)
 # Python Interview Prep
 I am doing some interview prep using Codecademy's Python technical interview prep course.  These won't be robust notes but instead will be where I store all of the example code I write.
 
@@ -836,3 +840,152 @@ class TreeNode:
       print(current_node.value)
       nodes_to_visit += current_node.children
 ```
+
+### Binary Search Trees
+- BSTs are an efficient datastructure for fast storage and retrieval ($O(log{N})$)
+- This tree structure is made up of one root node and each node points to at most 2 children
+- These trees can either enforce that there can be no duplicate values or allow for them
+- The left children of nodes are always LESS than the parent and right children of nodes are always GREATER than the parent
+
+#### An example in code
+```
+class BinarySearchTree:
+  def __init__(self, value, depth=1):
+    self.value = value
+    self.depth = depth
+    self.left = None
+    self.right = None
+
+  def insert(self, value):
+    if (value < self.value):
+      if (self.left is None):
+        self.left = BinarySearchTree(value, self.depth + 1)
+        print(f'Tree node {value} added to the left of {self.value} at depth {self.depth + 1}')
+      else:
+        self.left.insert(value)
+    else:
+      if (self.right is None):
+        self.right = BinarySearchTree(value, self.depth + 1)
+        print(f'Tree node {value} added to the right of {self.value} at depth {self.depth + 1}')
+      else:
+        self.right.insert(value)
+        
+  def get_node_by_value(self, value):
+    if (self.value == value):
+      return self
+    elif ((self.left is not None) and (value < self.value)):
+      return self.left.get_node_by_value(value)
+    elif ((self.right is not None) and (value >= self.value)):
+      return self.right.get_node_by_value(value)
+    else:
+      return None
+  
+  def depth_first_traversal(self):
+    if (self.left is not None):
+      self.left.depth_first_traversal()
+    print(f'Depth={self.depth}, Value={self.value}')
+    if (self.right is not None):
+      self.right.depth_first_traversal()
+```
+
+### Heaps
+- Heaps are used to maintain a maximum or minimum value of a dataset
+- When dealing with a min heap you need to focus on a few key parts:
+  - They are similar to a BST
+  - The value of a child node is always greater than or equal to the parent
+  - The minimum value of the set is always the root
+- Heaps are typically visualized as trees since it's easier to understand conceptually but when they are actually being implemented, we tend to use arrays/lists for performance
+- When you fill the tree in from left to right you can find the index of list implementation by doing the following:
+  - Left Child: $(index * 2) + 1$
+  - Right Child: $(index * 2) + 2$
+  - Parent: $(index - 1) // 2$
+- When you are trying to add a value that will break the fundamental rules of the heap you must `heapify` it
+- When you add the value to the bottom of the heap, proceed to swap it's spot with it's parent until the rules are no longer broken.  This is known as `heapifying up`
+- When you remove the root node from the heap you must `heapify down` which is the process of finding the new minimum, setting it to the root, and maintaining order
+
+#### Min heap code example
+```
+class MinHeap:
+  def __init__(self):
+    self.heap_list = [None]
+    self.count = 0
+
+  def parent_idx(self, idx):
+    return idx // 2
+
+  def left_child_idx(self, idx):
+    return idx * 2
+
+  def right_child_idx(self, idx):
+    return idx * 2 + 1
+
+  def child_present(self, idx):
+    return self.left_child_idx(idx) <= self.count
+  
+  def retrieve_min(self):
+    if self.count == 0:
+      print("No items in heap")
+      return None
+    
+    min = self.heap_list[1]
+    self.heap_list[1] = self.heap_list[self.count]
+    self.count -= 1
+    self.heap_list.pop()
+    self.heapify_down()
+    return min
+
+  def add(self, element):
+    self.count += 1
+    self.heap_list.append(element)
+    self.heapify_up()
+
+
+  def get_smaller_child_idx(self, idx):
+    if self.right_child_idx(idx) > self.count:
+      return self.left_child_idx(idx)
+    else:
+      left_child = self.heap_list[self.left_child_idx(idx)]
+      right_child = self.heap_list[self.right_child_idx(idx)]
+      if left_child < right_child:
+        return self.left_child_idx(idx)
+      else:
+        return self.right_child_idx(idx)
+    
+  def heapify_up(self):
+    idx = self.count
+    swap_count = 0
+    while self.parent_idx(idx) > 0:
+      if self.heap_list[self.parent_idx(idx)] > self.heap_list[idx]:
+        swap_count += 1
+        tmp = self.heap_list[self.parent_idx(idx)]
+        self.heap_list[self.parent_idx(idx)] = self.heap_list[idx]
+        self.heap_list[idx] = tmp
+      idx = self.parent_idx(idx)
+
+    element_count = len(self.heap_list)
+    if element_count > 10000:
+      print("Heap of {0} elements restored with {1} swaps"
+            .format(element_count, swap_count))
+      print("")    
+      
+  def heapify_down(self):
+    idx = 1
+    # starts at 1 because we swapped first and last elements
+    swap_count = 1
+    while self.child_present(idx):
+      smaller_child_idx = self.get_smaller_child_idx(idx)
+      if self.heap_list[idx] > self.heap_list[smaller_child_idx]:
+        swap_count += 1
+        tmp = self.heap_list[smaller_child_idx]
+        self.heap_list[smaller_child_idx] = self.heap_list[idx]
+        self.heap_list[idx] = tmp
+      idx = smaller_child_idx
+
+    element_count = len(self.heap_list)
+    if element_count >= 10000:
+      print("Heap of {0} elements restored with {1} swaps"
+            .format(element_count, swap_count))
+      print("")  
+```
+
+
