@@ -34,6 +34,12 @@
       - [Big Omega ($\Omega$) and Big O (O)](#big-omega-omega-and-big-o-o)
       - [Adding runtimes](#adding-runtimes)
       - [Asymptotic Examples](#asymptotic-examples)
+  - [Non Linear Data Structures](#non-linear-data-structures)
+    - [Trees](#trees)
+      - [Binary Search Trees](#binary-search-trees)
+      - [Heaps](#heaps)
+      - [Basic Info](#basic-info)
+      - [Example of a Tree Node:](#example-of-a-tree-node)
 # Python Interview Prep
 I am doing some interview prep using Codecademy's Python technical interview prep course.  These won't be robust notes but instead will be where I store all of the example code I write.
 
@@ -781,3 +787,52 @@ def sort_linked_list(linked_list):
   return new_linked_list
 ```
 
+## Non Linear Data Structures
+
+### Trees
+- Tree data structures are used for storing data with a hierarchical structure
+- They are built using nodes similar to that of a linked list but instead point to left and right nodes and their parent
+
+#### Binary Search Trees
+- Binary search trees are a tree that are ordered so that each element to the left of a value are less than the value and each element to the right has a greater value
+- BSTs make searching for elements more efficient but they require some overhead work to keep them organized and balanced
+
+#### Heaps
+- Heaps are a different type of tree keep track of the min or maximum value in the tree.  These are referred to as max heaps and min heaps
+- Heaps are actually a variation of a BST since they use the same ordering as BSTs
+  
+#### Basic Info
+- Trees grow downwards from the root node 
+- Each node in a tree points to nodes lower in the tree.  These are known as `children`
+- Each node also points to the node higher up in the tree.  This is known as the `parent`
+- When a node has no children it is known as a `leaf`
+- If a node points to many children, it is known as a wide tree
+- Deep trees are trees with many layers
+- Whenever we traverse from a parent to a child we are going down another layer of the tree
+- When counting down from the root to a leaf you are finding the `depth`
+- When counting up from a leaf to the root you are finding the `height`
+
+
+#### Example of a Tree Node:
+```
+class TreeNode:
+  def __init__(self, value):
+    self.value = value
+    self.children = []
+
+  def add_child(self, child_node):
+    print(f"Adding {child_node.value}")
+    self.children.append(child_node) 
+    
+  def remove_child(self, child_node):
+    print(f"Removing {child_node.value} from {self.value}")
+    self.children = [child for child in self.children if child is not child_node]
+
+  # Traverse through all nodes and print value
+  def traverse(self):
+    nodes_to_visit = [self]
+    while len(nodes_to_visit) > 0:
+      current_node = nodes_to_visit.pop()
+      print(current_node.value)
+      nodes_to_visit += current_node.children
+```
