@@ -44,6 +44,12 @@
       - [An example in code](#an-example-in-code)
     - [Heaps](#heaps-1)
       - [Min heap code example](#min-heap-code-example)
+  - [Sorting Algorithms](#sorting-algorithms)
+    - [Algorithmic Complexity of Covered Sorting Algs](#algorithmic-complexity-of-covered-sorting-algs)
+    - [Bubblw Sort](#bubblw-sort)
+    - [Merge Sort](#merge-sort)
+    - [Quick Sort](#quick-sort)
+    - [Radix Sort](#radix-sort)
 # Python Interview Prep
 I am doing some interview prep using Codecademy's Python technical interview prep course.  These won't be robust notes but instead will be where I store all of the example code I write.
 
@@ -989,3 +995,150 @@ class MinHeap:
 ```
 
 
+## Sorting Algorithms
+
+### Algorithmic Complexity of Covered Sorting Algs
+|             | Best Case     | Worst Case    | Average Case  | Space Complexity |
+| ----------- | ------------- | ------------- | ------------- | ---------------- |
+| Bubble Sort | $O(N)$        | $O(N^2)$      | $O(N^2)$      | $O(1)            |
+| Merge Sort  | $O(N*log{N})$ | $O(N*log{N})$ | $O(N*log{N})$ | $O(N)$           |
+| Quick Sort  | $O(N*log{N})$ | $O(N^2)$      | $O(N*log{N})$ | $O(log{N})$      |
+| Radix Sort  | $O(kN)$       | $O(kN)$       | $O(kN)$       | $O(N + k)        |
+### Bubblw Sort
+- Bubble sort is an introductory sorting algorithm to teach the basics of sorting algorithms
+- This algorithm is implemented with 2 loops
+  - An inner loop which is looping through the full structure comparing adjacent values and swapping them if they don't abide to the sorting criteria.  This loops `N-1` times
+  - An outer loop that will loop `N` times because with every pass of the inner loop, we are guaranteed to have 1 more item placed in order
+```
+def bubble_sort(arr):
+  iteration_count = 0
+  n = len(arr)
+  for i in range(n):
+    # iterate through unplaced elements
+    for idx in range(n - i - 1):
+      if arr[idx] > arr[idx + 1]:
+        arr[idx], arr[idx + 1] = arr[idx + 1], arr[idx]
+```
+
+### Merge Sort
+- Merge sort is a divide and conquer algorithm that breaks the list into multiple sections, performs small swaps, and then merges them back together sorted
+- Merge sort consists of 2 steps
+  1.  Breaking the list into smaller sections known as `runs`.  This continues until we are left with `N` lists of length 1
+  2.  Once we have broken all of our lists into length of 1, we begin to merge them back together in a sorted fashion
+- Once we begin merging them back together, we will have a left list and a right list.  You iterate through each list comparing the elements and inserting them in a sorted manner
+- You only merge together presorted lists.  This is why we break the list down to many lists of length one
+- Merge sort is actually comprised of two functions!
+```
+def merge_sort(items):
+  if len(items) <= 1:
+    return items
+
+  middle_index = len(items) // 2
+  left_split = items[:middle_index]
+  right_split = items[middle_index:]
+
+  left_sorted = merge_sort(left_split)
+  right_sorted = merge_sort(right_split)
+
+  return merge(left_sorted, right_sorted)
+
+def merge(left, right):
+  result = []
+
+  while (left and right):
+    if left[0] < right[0]:
+      result.append(left[0])
+      left.pop(0)
+    else:
+      result.append(right[0])
+      right.pop(0)
+
+  if left:
+    result += left
+  if right:
+    result += right
+
+  return result
+```
+
+
+### Quick Sort
+- Quick sort is a recursive comparison sorting algorithm
+- It also uses the divide and conquer strategy similar to merge sort
+- The array is once again divided until it is a set of N arrays of length 1
+- How it works:
+  1.  Choose a pivot element.  Every other element will be compared to this one
+  2.  Separate the list into 3 sub lists:
+      1.  A list of elements **smaller than** the pivot
+      2.  A list containing the pivot itself
+      3.  A list containing elements **larger than** the pivot
+  3.  Repeate step 2 until the sub arrays contain 0 or 1 elements
+  4.  You then merge the sub lists back into the original list
+- This algorithm produces a sorted mutation of the original list
+
+```
+from random import randrange, shuffle
+
+def quicksort(list, start, end):
+  if start >= end:
+    return
+  print("Running quicksort on {0}".format(list[start: end + 1]))
+  
+  # select random element to be pivot
+  pivot_idx = randrange(start, end + 1)
+  pivot_element = list[pivot_idx]
+
+  # swap random element with last element in sub-lists
+  list[end], list[pivot_idx] = list[pivot_idx], list[end]
+
+  # tracks all elements which should be lesser than the pivot
+  less_than_pointer = start
+  
+  for i in range(start, end):
+    if list[i] < pivot_element:
+      # swap element to the right-most portion of lesser elements
+      list[i], list[less_than_pointer] = list[less_than_pointer], list[i]
+      less_than_pointer += 1
+  # move pivot element to the right-most portion of lesser elements
+  list[end], list[less_than_pointer] = list[less_than_pointer], list[end]
+  # recursively sort left and right sub-lists
+  quicksort(list, start, less_than_pointer - 1)
+  quicksort(list, less_than_pointer + 1, end)
+```
+
+### Radix Sort
+- Radix sort is a non comparison sort managing to sort lists of integers without performing any comparisons
+- Radix sort uses the base number of the desired numbering system to perform comparisons
+- Radix sort has 2 variants.  Most significant digit (`MSD`) and Least significant digit (`LSD`)
+- Numbers are bucketed based on the value of digits.  The comparisons are made from left to right with `MSD` and right to left with `LSD`
+- This is only used on numbers
+
+```
+def radix_sort(to_be_sorted):
+  maximum_value = max(to_be_sorted)
+  max_exponent = len(str(maximum_value))
+  being_sorted = to_be_sorted[:]
+
+  for exponent in range(max_exponent):
+    position = exponent + 1
+    index = -position
+
+    digits = [[] for i in range(10)]
+
+    for number in being_sorted:
+      number_as_a_string = str(number)
+      try:
+        digit = number_as_a_string[index]
+        digit = int(digit)
+
+      except IndexError:
+        digit = 0
+      
+      digits[digit].append(number)
+    
+    being_sorted = []
+    for numeral in digits:
+      being_sorted.extend(numeral)
+
+  return being_sorted
+```
