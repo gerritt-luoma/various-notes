@@ -50,6 +50,17 @@
     - [Merge Sort](#merge-sort)
     - [Quick Sort](#quick-sort)
     - [Radix Sort](#radix-sort)
+  - [Graphs and Graph Traversal](#graphs-and-graph-traversal)
+    - [Graph Basics](#graph-basics)
+      - [Definitions](#definitions)
+      - [Representing Graphs](#representing-graphs)
+      - [Basic graph code example](#basic-graph-code-example)
+    - [Graph Searches/Traversals](#graph-searchestraversals)
+      - [Traversal Order](#traversal-order)
+      - [Depth First Search (`DFS`) - $O(vertices + edges)$](#depth-first-search-dfs---overtices--edges)
+      - [Breadth First Search (`BFS`) - $O(vertices + edges)$](#breadth-first-search-bfs---overtices--edges)
+      - [Dijkstra's Algorithm - $O((V + E)logV)$](#dijkstras-algorithm---ov--elogv)
+      - [A* Algorithm](#a-algorithm)
 # Python Interview Prep
 I am doing some interview prep using Codecademy's Python technical interview prep course.  These won't be robust notes but instead will be where I store all of the example code I write.
 
@@ -1141,4 +1152,217 @@ def radix_sort(to_be_sorted):
       being_sorted.extend(numeral)
 
   return being_sorted
+```
+
+## Graphs and Graph Traversal
+
+### Graph Basics
+- Graphs are a data structure used to model networks
+- Graphs are composed of vertices (Nodes) and edges which are the connections between to vertices
+- A basic image of a graph:
+
+![Graph image pulled from web.cecs.pdx.edu](http://web.cecs.pdx.edu/~sheard/course/Cs163/Graphics/graph1.png)
+- You can use graphs to model streets to destinations, subway stations, plane flights, etc
+- Graphs have varying levels of connections.  The larger the ratio between edges and connections is, the more connected the graph is
+- If the graph represents a social network, the people are the vertices while the edges are friendships
+
+#### Definitions
+- When the edge goes both directions it is considered a `bi directional` edge
+- When the edges only goes one direction, it is considered a `directed` graph
+- When you can connect between 2 vertices over any number of edges this is known as a `path`
+- When no path exists between 2 vertices, the graph is considered `disconnected`
+  - In the image above the graph would be disconnected if we removed the edges between 4-5 and 3-2
+- When driving from point A to point B you travel a specific distance.  In the terms of graphs, this distance is the `weight` of the edge
+  - When travelling from point A to point B on a graph, you will want to tally the total weight to find to overall cost of the path
+
+#### Representing Graphs
+- The vertex-edge relationship of a graph is typically represented in two ways: an adjacency list or an adjacency matrix
+- An adjacency matrix is a table where the it is an $NxN$ size
+- Each node is represented on both the x and y axes.  Each node is represented twice because the edges can go both ways
+
+
+#### Basic graph code example
+```
+class Vertex:
+  def __init__(self, value):
+    self.value = value
+    self.edges = {}
+
+  def add_edge(self, vertex, weight = 0):
+    self.edges[vertex] = weight
+
+  def get_edges(self):
+    return list(self.edges.keys())
+```
+
+```
+class Graph:
+  def __init__(self, directed = False):
+    self.graph_dict = {}
+    self.directed = directed
+
+  def add_vertex(self, vertex):
+    self.graph_dict[vertex.value] = vertex
+
+  def add_edge(self, from_vertex, to_vertex, weight = 0):
+    self.graph_dict[from_vertex.value].add_edge(to_vertex.value, weight)
+    if not self.directed:
+      self.graph_dict[to_vertex.value].add_edge(from_vertex.value, weight)
+
+  def find_path(self, start_vertex, end_vertex):
+    start = [start_vertex]
+    seen = {}
+    while len(start) > 0:
+      current_vertex = start.pop(0)
+      seen[current_vertex] = True
+      print("Visiting " + current_vertex)
+      if current_vertex == end_vertex:
+        return True
+      else:
+        vertices_to_visit = set(self.graph_dict[current_vertex].edges.keys())
+        start += [vertex for vertex in vertices_to_visit if vertex not in seen]
+    return False
+```
+
+### Graph Searches/Traversals
+
+#### Traversal Order
+- There are 3 main traversal order that are used when traversing through graphs
+  1.  `Preorder`: Preorder is when each vertex is added to the `visited list` and added to the `output list` **BEFORE** getting *added* to the stack
+  2.  `Postorder`: Postorder is when each vertex is added to the `visited list` and added to the `output list` **AFTER** it is *popped* off the stack
+  3.  `Reverse postorder`: Also known as `Topological Sort`, which returns an output list which is the exact reverse of the post order output list
+
+
+#### Depth First Search (`DFS`) - $O(vertices + edges)$
+- A depth first graph search follows a path all the way to the end the graph before trying a new path
+- Common uses:
+  - Finding a path between 2 vertices
+  - Detecting cycles
+  - Topological sorting
+  - Solving problems with a single correct answer (like sudoku)
+- Typically uses recursion or a stack
+```
+def dfs(graph, current_vertex, target_value, visited=None):
+  if visited is None:
+    visited = []
+	
+  visited.append(current_vertex)
+  
+  if current_vertex == target_value:
+    return visited
+	
+  # Add your recursive case here:
+  for neighbor in graph[current_vertex]:
+    if neighbor not in visited:
+      path = dfs(graph, neighbor, target_value, visited)
+      if path:
+        return path
+```
+
+#### Breadth First Search (`BFS`) - $O(vertices + edges)$
+- A breadth first search on a graph checks all of the neighboring vertices before moving another level down
+- This is very inefficient when trying to find a path between 2 points but is a good way of trying to find the **SHORTEST** path between them
+- Helpful for finding directions between two vertices
+- Typically uses a queue
+```
+def bfs(graph, start_vertex, target_value):
+  path = [start_vertex]
+  vertex_and_path = [start_vertex, path]
+  bfs_queue = [vertex_and_path]
+  visited = set()
+  
+  while bfs_queue:
+    current_vertex, path = bfs_queue.pop(0)
+    visited.add(current_vertex)
+    
+    for neighbor in graph[current_vertex]:
+      # Finish the function here:
+      if neighbor not in visited:
+        if neighbor is target_value:
+          return path + [neighbor]
+        else:
+          bfs_queue.append([neighbor, path + [neighbor]])
+```
+
+#### Dijkstra's Algorithm - $O((V + E)logV)$
+- Dijkstra's algorithm is used to find the **SHORTEST** distance from one given path to every other point in a weighted graph
+- The algorithm keeps track of all distances and updates these distances during a `BFS`
+- Very common algoritm for finding the quickest path from one point to another
+- Overview of how Dijkstra's works:
+  1. Instantiate a dict which will map vertices to their disctance from the start vertex
+  2. Assign the start vertex with a distance of 0 on a min heap
+  3. Assign every other vertex a distance of infinity in the min heap
+  4. Remove the vertex with the smallest distance from min heap and set to current vertex
+  5. With the current vertex look at adjacent vertexes and calculate distance from start (total distance + edge weight)
+  6. If this is less than the current distance, replace the current distance
+  7. Once the heap is empty return the distances
+
+```
+from heapq import heappop, heappush
+from math import inf
+
+def dijkstras(graph, start):
+  distances = {}
+  
+  for vertex in graph:
+    distances[vertex] = inf
+    
+  distances[start] = 0
+  vertices_to_explore = [(0, start)]
+  
+  while vertices_to_explore:
+    current_distance, current_vertex = heappop(vertices_to_explore)
+    
+    for neighbor, edge_weight in graph[current_vertex]:
+      new_distance = current_distance + edge_weight
+      
+      if new_distance < distances[neighbor]:
+        distances[neighbor] = new_distance
+        heappush(vertices_to_explore, (new_distance, neighbor))
+        
+  return distances
+```
+
+
+#### A* Algorithm
+- A* is used to not find the shortest path to all points from point, but is instead used to find the shortest path from one point to another point
+- This avoids searching for other connecting path which saves a lot of time
+- Instead of checking the distance up to the current vertex like in Dijkstra's, it checks the distance to the current vertex + the estimated distance to the target
+- This estimated distance is called the `heuristic` and is calculated with pythagorean theorem
+  - $d = \sqrt{(x_1-x_2)^2+(y_1+y_2)^2}$
+- Changes from Dijkstra's:
+  1. Add a *target* to the search along side the *start*
+  2. Gather possible optimal paths and identify a **single** shortest path
+  3. Implement a `heuristic` that estimates the likely distance remaining
+
+```
+from math import inf, sqrt
+from heapq import heappop, heappush
+
+def heuristic(start, target):
+  x_distance = abs(start.position[0] - target.position[0])**2
+  y_distance = abs(start.position[1] - target.position[1])**2
+  return sqrt(x_distance + y_distance)
+
+def a_star(graph, start, target):
+  count = 0
+  paths_and_distances = {}
+
+  for vertex in graph:
+    paths_and_distances[vertex] = [inf, [start.name]]
+  
+  paths_and_distances[start][0] = 0
+  vertices_to_explore = [(0, start)]
+  while vertices_to_explore and paths_and_distances[target][0] == inf:
+    current_distance, current_vertex = heappop(vertices_to_explore)
+    for neighbor, edge_weight in graph[current_vertex]:
+      new_distance = current_distance + edge_weight + heuristic(neighbor, target)
+      new_path = paths_and_distances[current_vertex][1] + [neighbor.name]
+      
+      if new_distance < paths_and_distances[neighbor][0]:
+        paths_and_distances[neighbor][0] = new_distance
+        paths_and_distances[neighbor][1] = new_path
+        heappush(vertices_to_explore, (new_distance, neighbor))
+        count += 1
+  return paths_and_distances[target][1]
 ```
