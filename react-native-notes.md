@@ -19,6 +19,9 @@ These notes are based on the [Learn React Native](https://www.codecademy.com/lea
     - [Stylesheets](#stylesheets)
     - [Combining Styles](#combining-styles)
     - [Width and Height](#width-and-height)
+    - [Flexbox](#flexbox)
+      - [Flex Direction](#flex-direction)
+      - [Flex Justify Content](#flex-justify-content)
 
 ## Intro
 - There are over 5.7 **billion** users on mobile devices
@@ -140,3 +143,62 @@ These notes are based on the [Learn React Native](https://www.codecademy.com/lea
 - Any styles inlined in the list will override the styles defined in the stylesheet
 
 ### Width and Height
+- React native doesn't always use units like pixels when dealing with size/offset
+- This is due to the fact that pixels on mobile apps causes a lot of deviation due to the difference in screen sizes
+- Older phones typically have a lower pixels per inch (`PPI`) than newer phones so if you use pixels for sizing, it will cause images or text to be much larger than intended
+- Mobile development uses `Density-independent Pixels` or `dp` for sizing.  `dp` takes the screen `PPI` into account when setting the actual number of pixels and this is actually default in react native
+
+### Flexbox
+- Screen sizes and shapes differ between phones that your app will be supported on
+- Screens also "change shape" due to rotating the device or unfolding the device
+- When designing a layout, you should make your app responsive to the layout changes to account for these different sizes and shapes
+- The easiest way to make a responsive design is by using `flexbox`
+- The following example makes 3 colored boxes that take up the full width of the screen and an even amount of space:
+  ```
+  import React, { useState } from 'react';
+  import { Dimensions, StyleSheet, View } from 'react-native';
+
+  const App = () => (
+    <View style={styles.layout}>
+      <View style={[styles.box, { backgroundColor: 'red' }]} />
+      <View style={[styles.box, { backgroundColor: 'green' }]} />
+      <View style={[styles.box, { backgroundColor: 'blue' }]} />
+    </View>
+  );
+
+  export default App;
+
+  const MAX_WIDTH = Dimensions.get('window').width;
+  const MAX_HEIGHT = Dimensions.get('window').height;
+
+  export const styles = StyleSheet.create({
+    layout: {
+      flex: 1,
+      backgroundColor: '#e5e5e5',
+    },
+    box: {
+      flex: 1,
+      backgroundColor: 'black',
+    },
+  });
+  ```
+
+#### Flex Direction
+- Flexbox can also control the direction that children elements move within flexbox
+- The default direction that flexbox moves in react native is vertically (as opposed to horizontally on the web)
+- There are 4 directions for flexbox:
+  - `row` renders the child elements from left to right
+  - `row-reverse` renders the child elements from right to left
+  - `column` renders the child elements from top to bottom (default)
+  - `column-reverse` renders the child elements from bottom to top
+
+#### Flex Justify Content
+- We can also control how child elements are positioned within the parent flexbox
+- This is done with the `justifyContent` property
+- There are 6 total options available for `justifyContent`:
+  - `center` renders the children within the center of the parent
+  - `flex-start` renders the children at the start of the parent (default)
+  - `flex-end` renders them at the end of the parent box
+  - `space-around` renders the children with remaining space around the elements
+  - `space-between` renders the children with remaining space between the elements without a space at the start or the end
+  - `space-evenly` renders the children with remaining space evenly divided with space at the start and end
