@@ -22,6 +22,13 @@ These notes are based on the [Learn React Native](https://www.codecademy.com/lea
     - [Flexbox](#flexbox)
       - [Flex Direction](#flex-direction)
       - [Flex Justify Content](#flex-justify-content)
+  - [Navigation](#navigation)
+    - [Navigation Patterns](#navigation-patterns)
+    - [Navigation Planning](#navigation-planning)
+    - [React Navigation](#react-navigation)
+      - [Stack Navigation](#stack-navigation)
+      - [Tab Navigation](#tab-navigation)
+      - [Programmatic Navigation](#programmatic-navigation)
 
 ## Intro
 - There are over 5.7 **billion** users on mobile devices
@@ -202,3 +209,113 @@ These notes are based on the [Learn React Native](https://www.codecademy.com/lea
   - `space-around` renders the children with remaining space around the elements
   - `space-between` renders the children with remaining space between the elements without a space at the start or the end
   - `space-evenly` renders the children with remaining space evenly divided with space at the start and end
+
+
+## Navigation
+
+### Navigation Patterns
+- There are 3 common types of navigation patterns on mobile:
+  - `Tab Navigation` is when an app uses a tab bar to allow users to switch between screens.  These different screens usually contain different functionality.  These tabs typically contain the primary functionality of the app like the main post feed and a user profile
+  - `Stack Navigation` is when an app makes a user swipe from screen to screen to navigate through them.  When a user navigates through the screens, a new screen is pushed or popped off the stack.  This type of navigation is for when these screens are functionally related
+  - `Drawer Navigation` uses a pane that can be opened either by swiping or pressing a button.  This provides a menu where users can switch between screens.  Similar to the tab bar but can be hidden.
+
+### Navigation Planning
+- It is good practice to plan out your navigation ahead of time to group related screens together in an organized manner
+- Planning also allows us to spot issues early and correct them before the need to refactor code arises
+- You should sketch out a "navigation heirarchy" to get a better picture of what your navigation will look like
+
+### React Navigation
+- The library `react-navigation` is very helpful in managing navigation throughout a react native app
+- This library is able to hold together multiple screens of the app and determines what screen should be rendered next
+- `react-navigation` ships with out main three navigation types out of the box
+
+#### Stack Navigation
+```
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
+
+const App = () => (
+  <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen name="Feed" component={FeedScreen}/>
+    </Stack.Navigator>
+  </NavigationContainer>
+);
+
+const FeedScreen = () => (
+  <View style={styles.layout}>
+    <Text style={styles.title}>First screen</Text>
+  </View>
+)
+
+export default App;
+
+const styles = StyleSheet.create({
+  layout: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 32,
+    marginBottom: 16,
+  },
+});
+```
+
+#### Tab Navigation
+```
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+const FeedScreen = () => (
+  <View style={styles.layout}>
+    <Text style={styles.title}>Feed</Text>
+  </View>
+);
+
+const CatalogScreen = () => (
+  <View style={styles.layout}>
+    <Text style={styles.title}>Catalog</Text>
+  </View>
+)
+
+const Stack = createBottomTabNavigator();
+
+export const AppNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="Feed" component={FeedScreen} />
+    <Stack.Screen name="Catalog" component={CatalogScreen} />
+  </Stack.Navigator>
+);
+
+const App = () => (
+  <NavigationContainer>
+    <AppNavigator />
+  </NavigationContainer>
+);
+
+export default App;
+
+const styles = StyleSheet.create({
+  layout: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 32,
+    marginBottom: 16,
+  },
+});
+```
+
+#### Programmatic Navigation
+- With the built in navigators you get a cutomizable menu that users can use to navigate between the app screens
+- 
