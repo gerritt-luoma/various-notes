@@ -17,6 +17,8 @@ These notes are based on the [Learn React Native](https://www.codecademy.com/lea
     - [Design](#design)
   - [Styling](#styling)
     - [Stylesheets](#stylesheets)
+    - [Combining Styles](#combining-styles)
+    - [Width and Height](#width-and-height)
 
 ## Intro
 - There are over 5.7 **billion** users on mobile devices
@@ -130,3 +132,11 @@ These notes are based on the [Learn React Native](https://www.codecademy.com/lea
   });
   ```
 - Unfortunately, stylesheets are static meaning we can't change properties of styling based on user input
+
+### Combining Styles
+- Despite stylesheets being static, the style property has a way to handle dynamic styling
+- Within the style property of components we can include a list of properties
+- This list allows us to provide a stylesheet style along with conditional single properties combining static and dynamic styles
+- Any styles inlined in the list will override the styles defined in the stylesheet
+
+### Width and Height
