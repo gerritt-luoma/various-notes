@@ -29,6 +29,8 @@ These notes are based on the [Learn React Native](https://www.codecademy.com/lea
       - [Stack Navigation](#stack-navigation)
       - [Tab Navigation](#tab-navigation)
       - [Programmatic Navigation](#programmatic-navigation)
+      - [Nested Navigation](#nested-navigation)
+      - [Authentication Flow](#authentication-flow)
 
 ## Intro
 - There are over 5.7 **billion** users on mobile devices
@@ -318,4 +320,16 @@ const styles = StyleSheet.create({
 
 #### Programmatic Navigation
 - With the built in navigators you get a cutomizable menu that users can use to navigate between the app screens
-- 
+- `react-navigation` allows us to interact with the navigators programmatically which lets us move to different screens when needed
+- Every screen receives a `navigation` property which is an object with many useful methods
+  - **OR** you can instead use the `useNavigation` hook to get the nav object
+
+
+#### Nested Navigation
+- When developing an app it is very common to use multiple types of navigation to allow users to do everything you intend for them to do
+- You will need to be very careful when using multiple navigators at once since you will need to account for their combined functionality
+
+
+#### Authentication Flow
+- When authentication is needed on an app, we need to dynamically remove screens from our navigation depending on the status of authentication
+- React native will automatically move users to the correct screen once configured
