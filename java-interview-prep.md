@@ -11,6 +11,12 @@ These notes are taken based off the Codecademy "Pass the Technical Interview wit
   - [Additional Java Concepts](#additional-java-concepts)
     - [Type Casting](#type-casting)
     - [Dictionaries](#dictionaries)
+  - [Nodes](#nodes)
+  - [Linear Data Structures](#linear-data-structures)
+    - [Linked Lists](#linked-lists)
+    - [Doubly Linked Lists](#doubly-linked-lists)
+    - [Queues](#queues)
+    - [Stacks](#stacks)
 
 ## Scope in Java
 ### Intro to Scope
@@ -147,3 +153,155 @@ public class Car {
 - In Java, a `Dictionary` is an abstract class that stores data using key-value pairs like a hash map
 - When using a key you can retrieve the data that is associated with that key
 - `Dictionary` is actually an abstract parent of the `Hashtable` class with the main difference being that `Hashtable` doesn't allow `null` to be a key
+
+## Nodes
+- One of the main building blocks of data structures is called a `Node`.
+- Node contain the data that we are trying to manipulate/work with
+- They also contain links to other nodes.  If the link of a node is `null` it means you've reached the end of the path you were following
+- Nodes are considered `orphaned` if there is no existing link to them remaining
+- Nodes example:
+```
+public class Node {
+
+  public String data;
+  private Node next;
+
+  public Node(String data) {
+    this.data = data;
+    this.next = null;
+  }
+
+  public void setNextNode(Node node) {
+    this.next = node;
+  }
+
+  public Node getNextNode() {
+    return this.next;
+  }
+
+  public static void main(String[] args) {
+    // Instantiate Nodes
+    Node strawberry = new Node("Berry Tasty");
+    Node banana = new Node("Banana-rama");
+    Node coconut = new Node("Nuts for Coconut");
+
+    // Put nodes in order
+    strawberry.setNextNode(banana);
+    banana.setNextNode(coconut);
+
+    // Iterate through nodes to verify order
+    Node currentNode = strawberry;
+    while(null != currentNode) {
+      System.out.println(currentNode.data);
+      currentNode = currentNode.getNextNode();
+    }
+  }
+
+}
+
+// System.out:
+Berry Tasty
+Banana-rama
+Nuts for Coconut
+```
+
+## Linear Data Structures
+
+### Linked Lists
+- Singly linked are a very useful and versatile data structure
+- They can be used as an alternative to arrays when storing data in a linear fashion
+- Are comprised of nodes where each node stores the data and a link to the next node
+- Form the basis of many complex data structures
+- Have a single head node which is the first node in the list
+- Requires maintenance when adding and removing new nodes
+- Singly linked list example:
+```
+public class LinkedList {
+
+  public static void main(String []args) {
+    // Instantiate LinkedList
+    LinkedList seasons = new LinkedList();
+
+    // Print empty list
+    seasons.printList();
+
+    // Add in the seasons and print
+    seasons.addToHead("summer");
+    seasons.addToHead("spring");
+    seasons.printList();
+
+    seasons.addToTail("fall");
+    seasons.addToTail("winter");
+    seasons.printList();
+
+    // Remove head and print
+    seasons.removeHead();
+    seasons.printList();
+  }
+
+	public Node head;
+
+	public LinkedList() {
+		this.head = null;
+	}
+
+  public void addToHead(String data) {
+    Node newHead = new Node(data);
+    Node currentHead = this.head;
+    this.head = newHead;
+    if (currentHead != null) {
+      this.head.setNextNode(currentHead);
+    }
+  }
+
+  public void addToTail(String data) {
+    Node tail = this.head;
+    if (tail == null) {
+      this.head = new Node(data);
+    } else {
+      while (tail.getNextNode() != null) {
+        tail = tail.getNextNode();
+      }
+        tail.setNextNode(new Node(data));
+    }
+  }
+
+  public String removeHead() {
+    Node removedHead = this.head;
+    if (removedHead == null) {
+      return null;
+    }
+    this.head = removedHead.getNextNode();
+    return removedHead.data;
+  }
+
+  public String printList() {
+    String output = "<head> ";
+    Node currentNode = this.head;
+    while (currentNode != null) {
+      output += currentNode.data + " ";
+      currentNode = currentNode.getNextNode();
+    }
+    output += "<tail>";
+    System.out.println(output);
+    return output;
+  }
+
+}
+
+
+// System.out:
+<head> <tail>
+<head> spring summer <tail>
+<head> spring summer fall winter <tail>
+<head> summer fall winter <tail>
+```
+### Doubly Linked Lists
+- Doubly linked lists are the same as regular linked lists but instead of nodes just having a `next` link they also have a `previous` link
+- You are able to iterate backwards through the list
+### Queues
+- Queues are a collection of nodes that adds (`enqueues`) new nodes exclusively to the tail of the queue and removes (`pops`) nodes off the head
+- First in First out (`FIFO`) like a like at a grocery store
+### Stacks
+- Stacks are similar to that of a queue but instead of adding data to the tail, it `pushes` data to the head of the stack.  Stacks still `pop` from the head as well
+- First in Last out (`FILO`) like a stack of plates
