@@ -484,6 +484,119 @@ public class DoublyLinkedList {
 ### Queues
 - Queues are a collection of nodes that adds (`enqueues`) new nodes exclusively to the tail of the queue and removes (`pops`) nodes off the head
 - First in First out (`FIFO`) like a like at a grocery store
+- An example of a queue using a linked list and standard nodes:
+```
+public class Queue {
+
+    public LinkedList queue;
+    public int size;
+    static final int DEFAULT_MAX_SIZE = Integer.MAX_VALUE;
+    public int maxSize;
+
+    public Queue() {
+        this(DEFAULT_MAX_SIZE);
+    }
+
+    public Queue(int maxSize) {
+        this.queue = new LinkedList();
+        this.size = 0;
+        this.maxSize = maxSize;
+    }
+
+    public boolean hasSpace() {
+        return this.size < this.maxSize;
+    }
+
+    public boolean isEmpty() {
+        return this.size == 0;
+    }
+
+    public void enqueue(String data) {
+        if (this.hasSpace()) {
+            this.queue.addToTail(data);
+            this.size++;
+        } else {
+            throw new Error("Queue is full!");
+        }
+    }
+
+    public String dequeue() {
+        if (!this.isEmpty()) {
+            String data = this.queue.removeHead();
+            this.size--;
+            return data;
+        } else {
+            throw new Error("Queue is empty!");
+        }
+    }
+
+    public String peek() {
+        if (this.isEmpty()) {
+            return null;
+        } else {
+            return this.queue.head.data;
+        }
+    }
+}
+```
 ### Stacks
 - Stacks are similar to that of a queue but instead of adding data to the tail, it `pushes` data to the head of the stack.  Stacks still `pop` from the head as well
 - First in Last out (`FILO`) like a stack of plates
+- An example of a stack using a linked list:
+```
+public class Stack {
+
+    public LinkedList stack;
+    public int size;
+    static final int DEFAULT_MAX_SIZE = Integer.MAX_VALUE;
+    public int maxSize;
+
+    public Stack() {
+        this(DEFAULT_MAX_SIZE);
+    }
+
+    public Stack(int maxSize) {
+        this.stack = new LinkedList();
+        this.size = 0;
+        this.maxSize = maxSize;
+    }
+
+    public boolean hasSpace() {
+        return this.size < this.maxSize;
+    }
+
+    public boolean isEmpty() {
+        return this.size == 0;
+    }
+
+    public void push(String data) {
+        if (this.hasSpace()) {
+            this.stack.addToHead(data);
+            this.size++;
+        } else {
+            throw new Error("Stack is full!");
+        }
+
+    }
+
+    public String pop() {
+        if (!this.isEmpty()) {
+            String data = this.stack.removeHead();
+            this.size--;
+            return data;
+        } else {
+            throw new Error("Stack is empty!");
+        }
+    }
+
+    public String peek() {
+        if (this.isEmpty()) {
+            return null;
+        } else {
+            return this.stack.head.data;
+        }
+    }
+
+
+}
+```
