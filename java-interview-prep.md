@@ -17,6 +17,10 @@ These notes are taken based off the Codecademy "Pass the Technical Interview wit
     - [Doubly Linked Lists](#doubly-linked-lists)
     - [Queues](#queues)
     - [Stacks](#stacks)
+  - [Hash Maps](#hash-maps)
+    - [Hashing](#hashing)
+    - [Compression](#compression)
+    - [Collisions](#collisions)
 
 ## Scope in Java
 ### Intro to Scope
@@ -598,5 +602,106 @@ public class Stack {
     }
 
 
+}
+```
+
+## Hash Maps
+- Hash maps map keys to their related values and are one of the most efficient structures when storing data.
+- This is due to having the associated key.  Knowing the key for a piece of data allows for $O(1)$ retrieval
+- When dealing with a problem that requires data storage and retrieval, hash maps are typically the most efficient
+- The underlying structure that hash maps use is an array
+
+### Hashing
+- The secret to efficiently storing and retrieving the data is the hash function.
+- It takes the key as an input and returns an index within the hash maps array
+- This function will always return the same output with the same input.  This is known as `Deterministic`.
+- A very simple example of a hash map function.  This example is not good because it is very liable to hashing collisions:
+```
+public int hash(String key) {
+  int hashCode = 0;
+  for(int i = 0; i < key.length(); i++) {
+    hashCode += Character.codePointAt(key, i);
+  }
+  return hashCode;
+}
+```
+
+### Compression
+- The current hash function example has another issue.  It currently produces an output regardless of the size of the internal array
+- To fix this we use `compression`
+- Compression is the act of taking an input and returning an output within a specific range
+- An easy way to handle this is by using the % operator to just get the remainder of the hash function.  This is also prone to collisions
+```
+public int hash(String key) {
+    int hashCode = 0;
+    for (int i = 0; i < key.length(); i++) {
+        hashCode = hashCode + Character.codePointAt(key, i);
+    }
+    hashCode = hashCode % this.hashmap.length;
+    return hashCode;
+}
+```
+
+### Collisions
+- A collision is when two keys generate the same index
+- The current example implementation doesn't account for collisions and just overwrites the data at the hashed index if there is a collision
+- One method of handling collisions is to instead of having an array of the datatype we're storing, store a linked list that stores both the `original key` and the `data` we are storing
+- Resolving collisions will require some maintenance but is very simple
+- New example with collision resolution:
+```public class HashMap {
+
+    public LinkedList[] hashmap;
+
+    public HashMap(int size) {
+        this.hashmap = new LinkedList[size];
+        for (int i = 0; i < size; i++) {
+            this.hashmap[i] = new LinkedList();
+        }
+    }
+
+    public int hash(String key) {
+        int hashCode = 0;
+        for (int i = 0; i < key.length(); i++) {
+            hashCode = hashCode + Character.codePointAt(key, i);
+        }
+        hashCode = hashCode % this.hashmap.length;
+        return hashCode;
+    }
+
+    public void assign(String key, String value) {
+        int arrayIndex = this.hash(key);
+        LinkedList list = this.hashmap[arrayIndex];
+        if (list.head == null) {
+            list.addToHead(key, value);
+            return;
+        }
+        Node current = list.head;
+        while (current != null) {
+            if (current.key == key) {
+                current.setKeyValue(key, value);
+            }
+            if (current.getNextNode() == null) {
+                current.setNextNode(new Node(key, value));
+                break;
+            }
+            current = current.getNextNode();
+        }
+    }
+
+    public String retrieve(String key) {
+        int arrayIndex = this.hash(key);
+        Node current = this.hashmap[arrayIndex].head;
+        while (current != null) {
+            if (current.key == key) {
+                return current.value;
+            }
+            current = current.getNextNode();
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+
+    }
 }
 ```
